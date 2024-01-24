@@ -24,20 +24,22 @@ public class ActionController : MonoBehaviour
     [SerializeField] KeyCode tackleKey = KeyCode.G;
     [SerializeField] float tackleSpeed = 15f;
     [SerializeField] float tackleCooldown = 1f;
-    [SerializeField] float tackleMultiplier = 1f;
+    [SerializeField] float tackleMultiplier = 3f;
     [SerializeField] float actualTackleSpeed;
     [HideInInspector] public bool isTackling;
     [HideInInspector] bool canShowTackle;
     [HideInInspector] Vector3 tackleDirection;
     [Space]
     [SerializeField] KeyCode diveKey = KeyCode.B;
-    [SerializeField] float diveForce = 5f;
+    [SerializeField] float diveForce = 10f;
     [SerializeField] float diveCooldown = 1f;
-    [SerializeField] float diveMultiplier = 0.65f;
+    [SerializeField] float diveMultiplier = 1f;
     [SerializeField] float actualDiveForce;
     [HideInInspector] public bool isDiving;
     [HideInInspector] bool canShowDive;
     [HideInInspector] Vector3 diveDirection;
+    [Space]
+    [SerializeField] KeyCode tackledDebugKey = KeyCode.L;
 
     // 
     // VISUAL DEBUGGING
@@ -55,7 +57,6 @@ public class ActionController : MonoBehaviour
 
 
     void Update(){
-        animator.SetBool("isRunning", movement.direction != Vector3.zero);
 
         // 
         // Kicking
@@ -85,7 +86,7 @@ public class ActionController : MonoBehaviour
             Invoke("stopTackling", tackleCooldown);
         }
         if(canShowTackle){
-            rigidbody.AddForce(tackleDirection * actualTackleSpeed, ForceMode.Force);
+            rigidbody.AddForce(tackleDirection * actualTackleSpeed * 3f, ForceMode.Force);
         }
 
 
@@ -103,7 +104,7 @@ public class ActionController : MonoBehaviour
             Invoke("stopDiving", diveCooldown);
         }
         if(canShowDive){
-            rigidbody.AddForce(diveDirection * actualDiveForce + Vector3.up * actualDiveForce / 5, ForceMode.Force);
+            rigidbody.AddForce((diveDirection * actualDiveForce + Vector3.up * actualDiveForce / 5 )* 5f, ForceMode.Force);
         }
 
 
@@ -119,6 +120,13 @@ public class ActionController : MonoBehaviour
         animator.SetBool("isKicking", canShowKick);
         animator.SetBool("isTackling", canShowTackle);
         animator.SetBool("isDiving", canShowDive);
+        animator.SetBool("isRunning", movement.direction != Vector3.zero);
+
+        if(Input.GetKeyDown(tackledDebugKey)){
+            animator.SetBool("isTackled", true);
+        }else{
+            animator.SetBool("isTackled", false);
+        }
     }
 
 
@@ -133,7 +141,7 @@ public class ActionController : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(this.transform.position + movement.lastDirection - Vector3.up * 0.5f, 0.65f, ballLayer);
         for(int i = 0; i < colliders.Length; i++){
             Rigidbody ball = colliders[i].transform.gameObject.GetComponent<Rigidbody>();
-            ball.AddForce(movement.lastDirection * actualKickForce, ForceMode.Impulse);
+            ball.AddForce(movement.lastDirection * actualKickForce * 2f, ForceMode.Impulse);
         }
         actualKickForce = 0;
     }
