@@ -141,7 +141,7 @@ public class ActionController : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(this.transform.position + movement.lastDirection - Vector3.up * 0.5f, 0.65f, ballLayer);
         for(int i = 0; i < colliders.Length; i++){
             Rigidbody ball = colliders[i].transform.gameObject.GetComponent<Rigidbody>();
-            ball.AddForce(movement.lastDirection * actualKickForce * 2f, ForceMode.Impulse);
+            ball.AddForce(this.transform.forward * actualKickForce * 2f + Vector3.up * actualKickForce, ForceMode.Impulse);
         }
         actualKickForce = 0;
     }

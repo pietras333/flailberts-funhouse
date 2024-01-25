@@ -65,17 +65,13 @@ public class Movement : MonoBehaviour
     // 
 
     void rotateTowardDirection(){
-        if (direction != Vector3.zero && canMove)
+        if (direction != Vector3.zero)
         {
             lastDirection = direction;
-            Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeedMultiplier * Time.fixedDeltaTime);
         }
-        else
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(lastDirection, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeedMultiplier * Time.fixedDeltaTime);
-        }
+        Quaternion targetRotation = Quaternion.LookRotation(lastDirection, Vector3.up);
+        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeedMultiplier * Time.fixedDeltaTime);
+        
     }
 
 }
