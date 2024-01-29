@@ -13,10 +13,17 @@ public class ActionController : MonoBehaviour
     [SerializeField] LayerMask ballLayer;
     [Space]
     [Header("Keycodes")]
+    [SerializeField] bool isUpForce;
+    [SerializeField] KeyCode upForceKey = KeyCode.LeftShift;
+    [SerializeField] float upForceMultiplier = 0.45f;
+    [SerializeField] float upForce = 10f;
+    [SerializeField] float actualUpForce;
+    [Space]
     [SerializeField] KeyCode kickKey = KeyCode.F;
     [SerializeField] float kickForce = 10f;
     [SerializeField] float kickCooldown = 0.25f;
     [SerializeField] float kickMultiplier = 0.65f;
+    [SerializeField] float kickForceMultiplier = 2f;
     [SerializeField] float actualKickForce;
     [HideInInspector] public bool isKicking;
     [HideInInspector] bool canShowKick;
@@ -25,6 +32,7 @@ public class ActionController : MonoBehaviour
     [SerializeField] float tackleSpeed = 15f;
     [SerializeField] float tackleCooldown = 1f;
     [SerializeField] float tackleMultiplier = 3f;
+    [SerializeField] float tackleForceMultiplier = 3f;
     [SerializeField] float actualTackleSpeed;
     [HideInInspector] public bool isTackling;
     [HideInInspector] bool canShowTackle;
@@ -35,6 +43,7 @@ public class ActionController : MonoBehaviour
     [SerializeField] float diveCooldown = 1f;
     [SerializeField] float diveMultiplier = 1f;
     [SerializeField] float actualDiveForce;
+    [SerializeField] float divingForceMultiplier = 5f;
     [HideInInspector] public bool isDiving;
     [HideInInspector] bool canShowDive;
     [HideInInspector] Vector3 diveDirection;
@@ -57,6 +66,16 @@ public class ActionController : MonoBehaviour
 
 
     void Update(){
+        // 
+        // Up-force switch
+        if(Input.GetKeyDown(upForceKey) && !isUpForce){
+            isUpForce = true;
+            StartCoroutine("upForceIncrementation");
+        }
+        if(Input.GetKeyUp(upForceKey) && isUpForce){
+            StopAllCoroutines();
+            resetUpForce();
+        }
 
         // 
         // Kicking
@@ -86,7 +105,8 @@ public class ActionController : MonoBehaviour
             Invoke("stopTackling", tackleCooldown);
         }
         if(canShowTackle){
-            rigidbody.AddForce(tackleDirection * actualTackleSpeed * 3f, ForceMode.Force);
+            rigidbody.AddForce(tackleDirection * actualTackleSpeed * tackleForceMultiplier, ForceMode.Force);
+            
         }
 
 
@@ -104,7 +124,7 @@ public class ActionController : MonoBehaviour
             Invoke("stopDiving", diveCooldown);
         }
         if(canShowDive){
-            rigidbody.AddForce((diveDirection * actualDiveForce + Vector3.up * actualDiveForce / 5 )* 5f, ForceMode.Force);
+            rigidbody.AddForce((diveDirection * actualDiveForce) * divingForceMultiplier, ForceMode.Force);
         }
 
 
@@ -141,7 +161,11 @@ public class ActionController : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(this.transform.position + movement.lastDirection - Vector3.up * 0.5f, 0.65f, ballLayer);
         for(int i = 0; i < colliders.Length; i++){
             Rigidbody ball = colliders[i].transform.gameObject.GetComponent<Rigidbody>();
-            ball.AddForce(this.transform.forward * actualKickForce * 2f + Vector3.up * actualKickForce, ForceMode.Impulse);
+            if(!isUpForce){
+                ball.AddForce(this.transform.forward * actualKickForce * kickForceMultiplier, ForceMode.Impulse);
+            }else{
+                ball.AddForce(this.transform.forward * actualKickForce * kickForceMultiplier + Vector3.up * actualUpForce, ForceMode.Impulse);
+            }
         }
         actualKickForce = 0;
     }
@@ -182,5 +206,19 @@ public class ActionController : MonoBehaviour
             actualDiveForce += diveMultiplier;
             yield return new WaitForSecondsRealtime(0.05f);
         }
+    }
+
+    //
+    // Up force incrementation
+
+    IEnumerator upForceIncrementation(){
+        while(actualUpForce < upForce){
+            actualUpForce += upForceMultiplier;
+            yield return new WaitForSecondsRealtime(0.05f);
+        }
+    }
+    void resetUpForce(){
+        actualUpForce = 0;
+        isUpForce = false;
     }
 }
