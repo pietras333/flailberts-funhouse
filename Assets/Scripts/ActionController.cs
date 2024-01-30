@@ -12,6 +12,7 @@ public class ActionController : MonoBehaviour
     [SerializeField] Animator animator;
     [SerializeField] LayerMask ballLayer;
     [Space]
+    [Space]
     [Header("Keycodes")]
     [SerializeField] bool isUpForce;
     [SerializeField] KeyCode upForceKey = KeyCode.LeftShift;
@@ -54,16 +55,21 @@ public class ActionController : MonoBehaviour
     // VISUAL DEBUGGING
     // 
 
-    void debugKickGizmos(){
-        Gizmos.color = Color.blue;
+    void debugKickDetection(){
+        Gizmos.color = Color.green;
         Vector3 direction = this.transform.position + movement.lastDirection - Vector3.up * 0.5f;
         Gizmos.DrawSphere(direction, 0.75f);
     }
 
-    public void OnDrawGizmosSelected(){
-        debugKickGizmos();
+    void debugVelocityVector(){
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(this.transform.position, this.transform.position + this.transform.forward);
     }
 
+    public void OnDrawGizmosSelected(){
+        debugKickDetection();
+        debugVelocityVector();
+    }
 
     void Update(){
         // 
