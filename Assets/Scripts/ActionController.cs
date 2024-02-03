@@ -11,15 +11,30 @@ public class ActionController : MonoBehaviour
     [SerializeField] Movement movement;
     [SerializeField] Animator animator;
     [SerializeField] LayerMask ballLayer;
+    [HideInInspector] Rigidbody ball;
     [Space]
     [Space]
     [Header("Keycodes")]
+    [Space]
+    [Header("Up force")]
     [SerializeField] bool isUpForce;
     [SerializeField] KeyCode upForceKey = KeyCode.LeftShift;
     [SerializeField] float upForceMultiplier = 0.45f;
     [SerializeField] float upForce = 10f;
     [SerializeField] float actualUpForce;
     [Space]
+    [Header("Curving")]
+    [SerializeField] bool isCurvingBall;
+    [SerializeField] float curveCooldown = 1f;
+    [SerializeField] KeyCode curveBallLeftKey = KeyCode.Q;
+    [SerializeField] KeyCode curveBallRightKey = KeyCode.E;
+    [SerializeField] Vector3 curveDirection;
+    [SerializeField] float curveForceMultiplier = 1f;
+    [SerializeField] float curveForce = 8f;
+    [SerializeField] float actualCurveForce;
+
+    [Space]
+    [Header("Kicking")]
     [SerializeField] KeyCode kickKey = KeyCode.F;
     [SerializeField] float kickForce = 10f;
     [SerializeField] float kickCooldown = 0.25f;
@@ -29,6 +44,7 @@ public class ActionController : MonoBehaviour
     [HideInInspector] public bool isKicking;
     [HideInInspector] bool canShowKick;
     [Space]
+    [Header("Tackling")]
     [SerializeField] KeyCode tackleKey = KeyCode.G;
     [SerializeField] float tackleSpeed = 15f;
     [SerializeField] float tackleCooldown = 1f;
@@ -39,6 +55,7 @@ public class ActionController : MonoBehaviour
     [HideInInspector] bool canShowTackle;
     [HideInInspector] Vector3 tackleDirection;
     [Space]
+    [Header("Diving")]
     [SerializeField] KeyCode diveKey = KeyCode.B;
     [SerializeField] float diveForce = 10f;
     [SerializeField] float diveCooldown = 1f;
@@ -71,7 +88,33 @@ public class ActionController : MonoBehaviour
         debugVelocityVector();
     }
 
+    void FixedUpdate(){
+        if(ball != null){
+            Vector3 velocity = Vector3.Lerp(ball.velocity, Vector3.zero, 3f * Time.fixedDeltaTime);
+            Vector3 direction = Vector3.Cross(velocity, Physics.gravity.normalized) * curveForce;
+            ball.AddForce(direction, ForceMode.Force);
+        }
+    }
+
     void Update(){
+        // 
+        // Curving
+        if(Input.GetKeyDown(curveBallLeftKey) || Input.GetKeyDown(curveBallRightKey) && !isCurvingBall){
+            isCurvingBall = true;
+            StartCoroutine("curveForceIncrementation");
+        }
+        if(Input.GetKeyUp(curveBallLeftKey) || Input.GetKeyUp(curveBallRightKey) && isCurvingBall){
+            StopAllCoroutines();
+            Invoke("resetCurveForce", curveCooldown);
+        }
+        if(Input.GetKey(curveBallLeftKey) && !Input.GetKey(curveBallRightKey)){
+            curveDirection = -Vector3.right;
+        }else if(Input.GetKey(curveBallRightKey) && !Input.GetKey(curveBallLeftKey)){
+            curveDirection = Vector3.right;
+        }else{
+            curveDirection = Vector3.zero;
+        }
+
         // 
         // Up-force switch
         if(Input.GetKeyDown(upForceKey) && !isUpForce){
@@ -112,7 +155,6 @@ public class ActionController : MonoBehaviour
         }
         if(canShowTackle){
             rigidbody.AddForce(tackleDirection * actualTackleSpeed * tackleForceMultiplier, ForceMode.Force);
-            
         }
 
 
@@ -140,6 +182,8 @@ public class ActionController : MonoBehaviour
         actualKickForce = Mathf.Clamp(actualKickForce, 0, kickForce);
         actualTackleSpeed = Mathf.Clamp(actualTackleSpeed, 0, tackleSpeed);
         actualDiveForce = Mathf.Clamp(actualDiveForce, 0, diveForce);
+        actualUpForce = Mathf.Clamp(actualUpForce, 0, upForce);
+        actualCurveForce = Mathf.Clamp(actualCurveForce, 0, curveForce);
 
         //
         // Animator States
@@ -166,13 +210,14 @@ public class ActionController : MonoBehaviour
     void handleKick(){
         Collider[] colliders = Physics.OverlapSphere(this.transform.position + movement.lastDirection - Vector3.up * 0.5f, 0.65f, ballLayer);
         for(int i = 0; i < colliders.Length; i++){
-            Rigidbody ball = colliders[i].transform.gameObject.GetComponent<Rigidbody>();
+            ball = colliders[i].transform.gameObject.GetComponent<Rigidbody>();
             if(!isUpForce){
                 ball.AddForce(this.transform.forward * actualKickForce * kickForceMultiplier, ForceMode.Impulse);
             }else{
                 ball.AddForce(this.transform.forward * actualKickForce * kickForceMultiplier + Vector3.up * actualUpForce, ForceMode.Impulse);
             }
         }
+
         actualKickForce = 0;
     }
     IEnumerator kickForceIncrementation(){
@@ -226,5 +271,20 @@ public class ActionController : MonoBehaviour
     void resetUpForce(){
         actualUpForce = 0;
         isUpForce = false;
+    }
+
+
+    //
+    // curve force incrementation
+
+    IEnumerator curveForceIncrementation(){
+        while(actualCurveForce < curveForce){
+            actualCurveForce += curveForceMultiplier;
+            yield return new WaitForSecondsRealtime(0.05f);
+        }
+    }
+    void resetCurveForce(){
+        actualCurveForce = 0;
+        isCurvingBall = false;
     }
 }
