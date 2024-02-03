@@ -10,6 +10,14 @@
 
 ###
 
+![image](https://github.com/pietras333/physics-based-soccer-game/assets/83142069/5d168388-60f8-4514-9c6b-5e3ec9dd0c08)
+
+###
+
+![image](https://github.com/pietras333/physics-based-soccer-game/assets/83142069/634b32e5-0fa4-4317-aef2-e578e5adf71d)
+
+###
+
 <div align="left">
   <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/csharp/csharp-original.svg" height="40" alt="csharp logo"  />
   <img width="12" />
