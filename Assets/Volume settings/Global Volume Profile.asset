@@ -70,14 +70,14 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   scrollOrientation:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value:
       mode: 2
       customValue: 0
       additiveValue: 234.1
       multiplyValue: 1
   scrollSpeed:
-    m_OverrideState: 1
+    m_OverrideState: 0
     m_Value:
       mode: 1
       customValue: 100

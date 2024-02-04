@@ -16,31 +16,31 @@ public class ActionController : MonoBehaviour
     [Space]
     [Header("Keycodes")]
     [Space]
+    [Header("Running")]
+    [SerializeField] float maxRunSpeed = 8f;
+    [HideInInspector] float baseMaxSpeed;
+    [SerializeField] bool isRunning;
+    [SerializeField] KeyCode runKey = KeyCode.LeftShift;
+    [SerializeField] float maxStamina = 20f;
+    [SerializeField] float currentStamina;
+    [SerializeField] float staminaDecreaseMultiplier = 0.1f;
+    [Space]
     [Header("Up force")]
     [SerializeField] bool isUpForce;
-    [SerializeField] KeyCode upForceKey = KeyCode.LeftShift;
+    [SerializeField] KeyCode upForceKey = KeyCode.Space;
     [SerializeField] float upForceMultiplier = 0.45f;
     [SerializeField] float upForce = 10f;
-    [SerializeField] float actualUpForce;
-    [Space]
-    [Header("Curving")]
-    [SerializeField] bool isCurvingBall;
-    [SerializeField] float curveCooldown = 1f;
-    [SerializeField] KeyCode curveBallLeftKey = KeyCode.Q;
-    [SerializeField] KeyCode curveBallRightKey = KeyCode.E;
-    [SerializeField] Vector3 curveDirection;
-    [SerializeField] float curveForceMultiplier = 1f;
-    [SerializeField] float curveForce = 8f;
-    [SerializeField] float actualCurveForce;
-
+    [SerializeField] float currentUpForce;
     [Space]
     [Header("Kicking")]
+    [SerializeField] float kickDetectionRange = 0.85f;
+    [SerializeField] float kickDetectionOffset = 0.5f;
     [SerializeField] KeyCode kickKey = KeyCode.F;
     [SerializeField] float kickForce = 10f;
     [SerializeField] float kickCooldown = 0.25f;
     [SerializeField] float kickMultiplier = 0.65f;
     [SerializeField] float kickForceMultiplier = 2f;
-    [SerializeField] float actualKickForce;
+    [SerializeField] float currentKickForce;
     [HideInInspector] public bool isKicking;
     [HideInInspector] bool canShowKick;
     [Space]
@@ -48,19 +48,19 @@ public class ActionController : MonoBehaviour
     [SerializeField] KeyCode tackleKey = KeyCode.G;
     [SerializeField] float tackleSpeed = 15f;
     [SerializeField] float tackleCooldown = 1f;
-    [SerializeField] float tackleMultiplier = 3f;
+    [SerializeField] float tackleMultiplier = 1.5f;
     [SerializeField] float tackleForceMultiplier = 3f;
-    [SerializeField] float actualTackleSpeed;
+    [SerializeField] public float currentTackleSpeed;
     [HideInInspector] public bool isTackling;
     [HideInInspector] bool canShowTackle;
     [HideInInspector] Vector3 tackleDirection;
     [Space]
     [Header("Diving")]
     [SerializeField] KeyCode diveKey = KeyCode.B;
-    [SerializeField] float diveForce = 10f;
+    [SerializeField] float diveForce = 5f;
     [SerializeField] float diveCooldown = 1f;
-    [SerializeField] float diveMultiplier = 1f;
-    [SerializeField] float actualDiveForce;
+    [SerializeField] float diveMultiplier = 0.65f;
+    [SerializeField] float currentDiveForce;
     [SerializeField] float divingForceMultiplier = 5f;
     [HideInInspector] public bool isDiving;
     [HideInInspector] bool canShowDive;
@@ -74,8 +74,8 @@ public class ActionController : MonoBehaviour
 
     void debugKickDetection(){
         Gizmos.color = Color.green;
-        Vector3 direction = this.transform.position + movement.lastDirection - Vector3.up * 0.5f;
-        Gizmos.DrawSphere(direction, 0.75f);
+        Vector3 direction = this.transform.position + movement.lastDirection - Vector3.up * kickDetectionOffset;
+        Gizmos.DrawSphere(direction, kickDetectionRange);
     }
 
     void debugVelocityVector(){
@@ -88,31 +88,32 @@ public class ActionController : MonoBehaviour
         debugVelocityVector();
     }
 
-    void FixedUpdate(){
-        if(ball != null){
-            Vector3 velocity = Vector3.Lerp(ball.velocity, Vector3.zero, 3f * Time.fixedDeltaTime);
-            Vector3 direction = Vector3.Cross(velocity, Physics.gravity.normalized) * curveForce;
-            ball.AddForce(direction, ForceMode.Force);
-        }
+    void Start(){
+        baseMaxSpeed = movement.maxSpeed;
+        currentStamina = maxStamina;
     }
 
     void Update(){
-        // 
-        // Curving
-        if(Input.GetKeyDown(curveBallLeftKey) || Input.GetKeyDown(curveBallRightKey) && !isCurvingBall){
-            isCurvingBall = true;
-            StartCoroutine("curveForceIncrementation");
+        //
+        // Running
+        if(Input.GetKeyDown(runKey) && currentStamina > 0){
+            isRunning = true;
         }
-        if(Input.GetKeyUp(curveBallLeftKey) || Input.GetKeyUp(curveBallRightKey) && isCurvingBall){
+        if(Input.GetKeyUp(runKey) || currentStamina <= 0f){
+            isRunning = false;
+        }
+
+        if(isRunning){
             StopAllCoroutines();
-            Invoke("resetCurveForce", curveCooldown);
+            StartCoroutine("handleStaminaDecrease");
+            movement.maxSpeed = maxRunSpeed;
         }
-        if(Input.GetKey(curveBallLeftKey) && !Input.GetKey(curveBallRightKey)){
-            curveDirection = -Vector3.right;
-        }else if(Input.GetKey(curveBallRightKey) && !Input.GetKey(curveBallLeftKey)){
-            curveDirection = Vector3.right;
-        }else{
-            curveDirection = Vector3.zero;
+        if(!isRunning){
+            if(!Input.GetKeyDown(runKey)){
+                StopAllCoroutines();
+                StartCoroutine("handleStaminaIncrease");                
+            }
+            movement.maxSpeed = baseMaxSpeed;
         }
 
         // 
@@ -154,7 +155,7 @@ public class ActionController : MonoBehaviour
             Invoke("stopTackling", tackleCooldown);
         }
         if(canShowTackle){
-            rigidbody.AddForce(tackleDirection * actualTackleSpeed * tackleForceMultiplier, ForceMode.Force);
+            rigidbody.AddForce(tackleDirection * currentTackleSpeed * tackleForceMultiplier, ForceMode.Force);
         }
 
 
@@ -172,18 +173,18 @@ public class ActionController : MonoBehaviour
             Invoke("stopDiving", diveCooldown);
         }
         if(canShowDive){
-            rigidbody.AddForce((diveDirection * actualDiveForce) * divingForceMultiplier, ForceMode.Force);
+            rigidbody.AddForce((diveDirection * currentDiveForce) * divingForceMultiplier, ForceMode.Force);
         }
 
 
 
         // 
         // Clamping values
-        actualKickForce = Mathf.Clamp(actualKickForce, 0, kickForce);
-        actualTackleSpeed = Mathf.Clamp(actualTackleSpeed, 0, tackleSpeed);
-        actualDiveForce = Mathf.Clamp(actualDiveForce, 0, diveForce);
-        actualUpForce = Mathf.Clamp(actualUpForce, 0, upForce);
-        actualCurveForce = Mathf.Clamp(actualCurveForce, 0, curveForce);
+        currentKickForce = Mathf.Clamp(currentKickForce, 0, kickForce);
+        currentTackleSpeed = Mathf.Clamp(currentTackleSpeed, 0, tackleSpeed);
+        currentDiveForce = Mathf.Clamp(currentDiveForce, 0, diveForce);
+        currentUpForce = Mathf.Clamp(currentUpForce, 0, upForce);
+        currentStamina = Mathf.Clamp(currentStamina, 0, maxStamina);
 
         //
         // Animator States
@@ -208,21 +209,21 @@ public class ActionController : MonoBehaviour
         movement.canMove = true;
     }
     void handleKick(){
-        Collider[] colliders = Physics.OverlapSphere(this.transform.position + movement.lastDirection - Vector3.up * 0.5f, 0.65f, ballLayer);
+        Collider[] colliders = Physics.OverlapSphere(this.transform.position + movement.lastDirection - Vector3.up * kickDetectionOffset, kickDetectionRange, ballLayer);
         for(int i = 0; i < colliders.Length; i++){
             ball = colliders[i].transform.gameObject.GetComponent<Rigidbody>();
             if(!isUpForce){
-                ball.AddForce(this.transform.forward * actualKickForce * kickForceMultiplier, ForceMode.Impulse);
+                ball.AddForce(this.transform.forward * currentKickForce * kickForceMultiplier, ForceMode.Impulse);
             }else{
-                ball.AddForce(this.transform.forward * actualKickForce * kickForceMultiplier + Vector3.up * actualUpForce, ForceMode.Impulse);
+                ball.AddForce(this.transform.forward * currentKickForce * kickForceMultiplier + Vector3.up * currentUpForce, ForceMode.Impulse);
             }
         }
 
-        actualKickForce = 0;
+        currentKickForce = 0;
     }
     IEnumerator kickForceIncrementation(){
-        while(actualKickForce < kickForce){
-            actualKickForce += kickMultiplier;
+        while(currentKickForce < kickForce){
+            currentKickForce += kickMultiplier;
             yield return new WaitForSecondsRealtime(0.05f);
         }
     }
@@ -234,11 +235,11 @@ public class ActionController : MonoBehaviour
         canShowTackle = false;
         isTackling = false;
         movement.canMove = true;
-        actualTackleSpeed = 0;
+        currentTackleSpeed = 0;
     }
     IEnumerator tackleSpeedIncrementation(){
-        while(actualTackleSpeed < tackleSpeed){
-            actualTackleSpeed += tackleMultiplier;
+        while(currentTackleSpeed < tackleSpeed){
+            currentTackleSpeed += tackleMultiplier;
             yield return new WaitForSecondsRealtime(0.05f);
         }
     }
@@ -250,11 +251,11 @@ public class ActionController : MonoBehaviour
         canShowDive = false;
         isDiving = false;
         movement.canMove = true;
-        actualDiveForce = 0;
+        currentDiveForce = 0;
     }
     IEnumerator diveForceIncrementation(){
-        while(actualDiveForce < diveForce){
-            actualDiveForce += diveMultiplier;
+        while(currentDiveForce < diveForce){
+            currentDiveForce += diveMultiplier;
             yield return new WaitForSecondsRealtime(0.05f);
         }
     }
@@ -263,28 +264,30 @@ public class ActionController : MonoBehaviour
     // Up force incrementation
 
     IEnumerator upForceIncrementation(){
-        while(actualUpForce < upForce){
-            actualUpForce += upForceMultiplier;
+        while(currentUpForce < upForce){
+            currentUpForce += upForceMultiplier;
             yield return new WaitForSecondsRealtime(0.05f);
         }
     }
     void resetUpForce(){
-        actualUpForce = 0;
+        currentUpForce = 0;
         isUpForce = false;
     }
 
 
-    //
-    // curve force incrementation
+    // 
+    // Stamina
 
-    IEnumerator curveForceIncrementation(){
-        while(actualCurveForce < curveForce){
-            actualCurveForce += curveForceMultiplier;
+    IEnumerator handleStaminaDecrease(){
+        while(currentStamina > 0){
+            currentStamina -= staminaDecreaseMultiplier;
             yield return new WaitForSecondsRealtime(0.05f);
         }
     }
-    void resetCurveForce(){
-        actualCurveForce = 0;
-        isCurvingBall = false;
-    }
+    IEnumerator handleStaminaIncrease(){
+        while(currentStamina < maxStamina){
+            currentStamina += staminaDecreaseMultiplier;
+            yield return new WaitForSecondsRealtime(0.05f);
+        }
+    } 
 }

@@ -8,12 +8,13 @@ public class Movement : MonoBehaviour
     [Space]
     [Header("References")]
     [SerializeField] Rigidbody rigidbody;
+    [SerializeField] float rigidbodyDrag = 0.5f;
     [Space]
     [Header("Variables")]
     [SerializeField] public bool canMove = true;
-    [SerializeField] float speed = 1000f;
-    [SerializeField] float maxSpeed = 5f;
-    [SerializeField] float stopSmoothness = 5f;
+    [SerializeField] public float speed = 1000f;
+    [SerializeField] public float maxSpeed = 5f;
+    [SerializeField] float stopSmoothness = 15f;
     [SerializeField] float rotationSpeedMultiplier = 10f;
     [HideInInspector] float directionX; 
     [HideInInspector] float directionZ;
@@ -36,6 +37,13 @@ public class Movement : MonoBehaviour
     }
 
 
+    // 
+    // Running functions
+
+    public void Start(){
+        rigidbody.drag = rigidbodyDrag;
+    }
+
     public void Update(){
         directionX = Input.GetAxisRaw("Horizontal");
         directionZ = Input.GetAxisRaw("Vertical");
@@ -55,7 +63,7 @@ public class Movement : MonoBehaviour
         if(direction == Vector3.zero || !canMove){
             rigidbody.velocity = Vector3.Slerp(rigidbody.velocity, new Vector3(0,rigidbody.velocity.y, 0), Time.fixedDeltaTime * stopSmoothness);
         }else{
-            rigidbody.AddForce(direction * speed * Time.fixedDeltaTime, ForceMode.Force); 
+            rigidbody.AddForce(direction.normalized * speed * Time.fixedDeltaTime, ForceMode.Force); 
         }
         rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, maxSpeed);
     }
@@ -71,7 +79,6 @@ public class Movement : MonoBehaviour
         }
         Quaternion targetRotation = Quaternion.LookRotation(lastDirection, Vector3.up);
         transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeedMultiplier * Time.fixedDeltaTime);
-        
     }
 
 }
