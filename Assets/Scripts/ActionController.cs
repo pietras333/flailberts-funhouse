@@ -23,7 +23,7 @@ public class ActionController : MonoBehaviour
     [SerializeField] KeyCode runKey = KeyCode.LeftShift;
     [SerializeField] float maxStamina = 20f;
     [SerializeField] float currentStamina;
-    [SerializeField] float staminaDecreaseMultiplier = 0.1f;
+    [SerializeField] float staminaDecreaseMultiplier = 0.01f;
     [Space]
     [Header("Up force")]
     [SerializeField] bool isUpForce;

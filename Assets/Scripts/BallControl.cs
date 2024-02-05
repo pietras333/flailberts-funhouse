@@ -29,7 +29,8 @@ public class BallControl : MonoBehaviour
         for(int i = 0; i < colliders.Length; i++){
             ball = colliders[i].transform.gameObject.GetComponent<Rigidbody>();
             if(!actionController.isKicking){
-                ball.AddForce(rigidbody.velocity * ballControlForce, ForceMode.Force);
+                // ball.AddForce(this.transform.forward * ballControlForce, ForceMode.Impulse);
+                ball.velocity = rigidbody.velocity;
             }
             if(actionController.isTackling){
                 ball.AddForce(this.transform.forward * actionController.currentTackleSpeed, ForceMode.Impulse);
