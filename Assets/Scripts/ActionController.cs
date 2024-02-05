@@ -104,13 +104,13 @@ public class ActionController : MonoBehaviour
         }
 
         if(isRunning){
-            StopAllCoroutines();
+            StopCoroutine("handleStaminaIncrease");
             StartCoroutine("handleStaminaDecrease");
             movement.maxSpeed = maxRunSpeed;
         }
         if(!isRunning){
             if(!Input.GetKeyDown(runKey)){
-                StopAllCoroutines();
+                StopCoroutine("handleStaminaDecrease");
                 StartCoroutine("handleStaminaIncrease");                
             }
             movement.maxSpeed = baseMaxSpeed;
@@ -123,7 +123,7 @@ public class ActionController : MonoBehaviour
             StartCoroutine("upForceIncrementation");
         }
         if(Input.GetKeyUp(upForceKey) && isUpForce){
-            StopAllCoroutines();
+            StopCoroutine("upForceIncrementation");
             resetUpForce();
         }
 
@@ -136,7 +136,7 @@ public class ActionController : MonoBehaviour
         if(Input.GetKeyUp(kickKey) && isKicking){
             movement.canMove = false;
             canShowKick = true;
-            StopAllCoroutines();
+            StopCoroutine("kickForceIncrementation");
             Invoke("handleKick", kickCooldown / 2);
             Invoke("stopKicking", kickCooldown / 2);
         }
@@ -151,7 +151,7 @@ public class ActionController : MonoBehaviour
             movement.canMove = false;
             canShowTackle = true;
             tackleDirection = movement.lastDirection;
-            StopAllCoroutines();
+            StopCoroutine("tackleSpeedIncrementation");
             Invoke("stopTackling", tackleCooldown);
         }
         if(canShowTackle){
@@ -169,7 +169,7 @@ public class ActionController : MonoBehaviour
             movement.canMove = false;
             canShowDive = true;
             diveDirection = movement.lastDirection;
-            StopAllCoroutines();
+            StopCoroutine("diveForceIncrementation");
             Invoke("stopDiving", diveCooldown);
         }
         if(canShowDive){
@@ -215,7 +215,7 @@ public class ActionController : MonoBehaviour
             if(!isUpForce){
                 ball.AddForce(this.transform.forward * currentKickForce * kickForceMultiplier, ForceMode.Impulse);
             }else{
-                ball.AddForce(this.transform.forward * currentKickForce * kickForceMultiplier + Vector3.up * currentUpForce, ForceMode.Impulse);
+                ball.AddForce(this.transform.forward * currentKickForce * kickForceMultiplier  + Vector3.up * currentUpForce, ForceMode.Impulse);
             }
         }
 

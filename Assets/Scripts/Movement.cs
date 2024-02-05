@@ -63,7 +63,7 @@ public class Movement : MonoBehaviour
         if(direction == Vector3.zero || !canMove){
             rigidbody.velocity = Vector3.Slerp(rigidbody.velocity, new Vector3(0,rigidbody.velocity.y, 0), Time.fixedDeltaTime * stopSmoothness);
         }else{
-            rigidbody.AddForce(direction.normalized * speed * Time.fixedDeltaTime, ForceMode.Force); 
+            rigidbody.AddForce(direction * speed * Time.fixedDeltaTime, ForceMode.Force); 
         }
         rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, maxSpeed);
     }
