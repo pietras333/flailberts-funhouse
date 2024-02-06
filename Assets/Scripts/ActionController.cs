@@ -11,6 +11,7 @@ public class ActionController : MonoBehaviour
     [SerializeField] Movement movement;
     [SerializeField] Animator animator;
     [SerializeField] LayerMask ballLayer;
+    [SerializeField] string playerTag = "Player";
     [HideInInspector] Rigidbody ball;
     [Space]
     [Space]
@@ -24,6 +25,7 @@ public class ActionController : MonoBehaviour
     [SerializeField] float maxStamina = 20f;
     [SerializeField] float currentStamina;
     [SerializeField] float staminaDecreaseMultiplier = 0.01f;
+    [SerializeField] float staminaIncreaseMultiplier = 0.0075f;
     [Space]
     [Header("Up force")]
     [SerializeField] bool isUpForce;
@@ -86,6 +88,15 @@ public class ActionController : MonoBehaviour
     public void OnDrawGizmosSelected(){
         debugKickDetection();
         debugVelocityVector();
+    }
+
+    
+    public void OnCollisionEnter(Collision collider){
+        if(collider.gameObject.tag == playerTag && isTackling){
+            TackledStateController tackledStateController = collider.gameObject.GetComponent<TackledStateController>();
+            tackledStateController.Tackled();
+            
+        }
     }
 
     void Start(){
@@ -286,8 +297,9 @@ public class ActionController : MonoBehaviour
     }
     IEnumerator handleStaminaIncrease(){
         while(currentStamina < maxStamina){
-            currentStamina += staminaDecreaseMultiplier;
+            currentStamina += staminaIncreaseMultiplier;
             yield return new WaitForSecondsRealtime(0.05f);
         }
     } 
+
 }
