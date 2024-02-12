@@ -10,6 +10,11 @@ public class CameraLock : MonoBehaviour
     [SerializeField] Transform ball;
     [SerializeField] Transform player;
     [SerializeField] float followSpeed;
+    [HideInInspector] float originalPosZ;
+
+    void Start(){
+        originalPosZ = transform.position.z;
+    }
 
     void Update(){
         Quaternion lookOnRotationBall = Quaternion.LookRotation(ball.transform.position - this.transform.position);
@@ -18,7 +23,7 @@ public class CameraLock : MonoBehaviour
         float distanceToBall = Vector3.Distance(player.transform.position, ball.transform.position);
         Quaternion crossRotation = Quaternion.Slerp(lookOnRotationPlayer, lookOnRotationBall,  0.5f);
 
-        this.transform.position = Vector3.Slerp(this.transform.position, new Vector3(player.transform.position.x + (distanceToBall * 0.5f), this.transform.position.y, this.transform.position.z), followSpeed * Time.deltaTime);
+        this.transform.position = Vector3.Slerp(this.transform.position, new Vector3(player.transform.position.x + (distanceToBall * 0.5f), this.transform.position.y, originalPosZ), followSpeed * Time.deltaTime);
         this.transform.rotation = Quaternion.Lerp(this.transform.rotation, crossRotation, followSpeed * Time.deltaTime);
     }
 }

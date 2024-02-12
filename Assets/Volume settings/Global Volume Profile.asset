@@ -21,10 +21,10 @@ MonoBehaviour:
     m_Value: 1
   exposure:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 1207
   multiplier:
     m_OverrideState: 1
-    m_Value: 1
+    m_Value: 5000
   upperHemisphereLuxValue:
     m_OverrideState: 1
     m_Value: 0.15545967
@@ -36,7 +36,7 @@ MonoBehaviour:
     m_Value: 20000
   updateMode:
     m_OverrideState: 1
-    m_Value: 0
+    m_Value: 2
   updatePeriod:
     m_OverrideState: 1
     m_Value: 0
