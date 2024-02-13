@@ -11,11 +11,13 @@ public class Movement : MonoBehaviour
     [SerializeField] float rigidbodyDrag = 0.5f;
     [Space]
     [Header("Variables")]
+    [SerializeField] KeyCode jogLeftKey = KeyCode.Q;
+    [SerializeField] KeyCode jogRightKey = KeyCode.E;
     [SerializeField] public bool canMove = true;
     [SerializeField] public float speed = 1000f;
     [SerializeField] public float maxSpeed = 5f;
     [SerializeField] float stopSmoothness = 15f;
-    [SerializeField] float rotationSpeedMultiplier = 10f;
+    [SerializeField] float rotationSmoothness = 5f;
     [HideInInspector] float directionX; 
     [HideInInspector] float directionZ;
     [HideInInspector] public Vector3 direction;
@@ -53,6 +55,14 @@ public class Movement : MonoBehaviour
     public void FixedUpdate(){
         move();
         rotateTowardDirection();
+
+        if(Input.GetKeyDown(jogLeftKey)){
+            rigidbody.AddForce(-this.transform.right * 5f, ForceMode.Impulse);
+        }
+        if(Input.GetKeyDown(jogRightKey)){
+            rigidbody.AddForce(this.transform.right * 5f, ForceMode.Impulse);
+
+        }
     }
 
     // 
@@ -78,7 +88,7 @@ public class Movement : MonoBehaviour
             lastDirection = direction;
         }
         Quaternion targetRotation = Quaternion.LookRotation(lastDirection, Vector3.up);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, rotationSpeedMultiplier * Time.fixedDeltaTime);
+        transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, rotationSmoothness * Time.deltaTime);
     }
 
 }

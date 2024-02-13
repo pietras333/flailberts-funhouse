@@ -1316,6 +1316,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -1561,6 +1566,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: tileLarge_forest (27)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
@@ -2710,6 +2720,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -3336,6 +3351,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: tileLarge_forest (13)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
@@ -6932,6 +6952,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -7934,6 +7959,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -8051,6 +8081,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: tileLarge_forest (28)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
@@ -10319,6 +10354,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -12423,6 +12463,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -12833,6 +12878,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -13037,6 +13087,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -13160,6 +13215,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: tileLarge_forest (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
@@ -13462,6 +13522,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: tileLarge_forest (15)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
@@ -14128,6 +14193,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -14497,6 +14567,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: tileLarge_forest (24)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
@@ -14957,6 +15032,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -15074,6 +15154,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: tileLarge_forest (26)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
@@ -15526,11 +15611,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 1134504634}
   rigidbodyDrag: 0.5
+  jogLeftKey: 113
+  jogRightKey: 101
   canMove: 1
   speed: 1000
   maxSpeed: 5
   stopSmoothness: 15
-  rotationSpeedMultiplier: 5
+  rotationSmoothness: 5
   direction: {x: 0, y: 0, z: 0}
   lastDirection: {x: 0, y: 0, z: 0}
 --- !u!54 &1134504634
@@ -15578,6 +15665,7 @@ MonoBehaviour:
   ballLayer:
     serializedVersion: 2
     m_Bits: 64
+  ballControl: {fileID: 1134504637}
   playerTag: Player
   maxRunSpeed: 8
   isRunning: 0
@@ -15655,6 +15743,7 @@ MonoBehaviour:
   actionController: {fileID: 1134504635}
   ballControlForce: 0.25
   ballMaxSpeed: 15
+  canControlBall: 1
   detectionVerticalOffset: 0.75
   ballDetectionRange: 0.75
   ballLayer:
@@ -18080,6 +18169,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: tileLarge_forest (16)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
@@ -21019,11 +21113,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rigidbody: {fileID: 0}
   rigidbodyDrag: 0.5
+  jogLeftKey: 113
+  jogRightKey: 101
   canMove: 1
   speed: 1000
   maxSpeed: 5
   stopSmoothness: 15
-  rotationSpeedMultiplier: 10
+  rotationSmoothness: 10
   direction: {x: 0, y: 0, z: 0}
   lastDirection: {x: 0, y: 0, z: 0}
 --- !u!1 &1506227287
@@ -22368,6 +22464,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -23579,6 +23680,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -23728,6 +23834,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: tileLarge_forest (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
@@ -24215,6 +24326,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: tileLarge_forest (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
@@ -26728,6 +26844,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -28334,6 +28455,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -29563,6 +29689,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -30146,6 +30277,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -30266,6 +30402,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -30383,6 +30524,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: tileLarge_forest (29)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
@@ -30892,6 +31038,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
       propertyPath: m_StaticEditorFlags
       value: 2147483647
       objectReference: {fileID: 0}
@@ -31229,6 +31380,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: tileLarge_forest (21)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 3728ef9f2c08d5b4ba76d935a28c4817,
         type: 3}
@@ -31724,9 +31880,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be680f7310f25b44b97ea493d0003d06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  groundCheck: {fileID: 3306018044463277052}
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  groundCheckRange: 0.25
+  isGrounded: 0
   playerTag: Player
   rigidbody: {fileID: 3312355593909908888}
-  ballMaxSpeed: 20
+  ballMaxSpeed: 0
+  inAirMaxSpeed: 15
+  groundedMaxSpeed: 13
   lastTouchedBy: {fileID: 0}
 --- !u!54 &3312355593909908888
 Rigidbody:

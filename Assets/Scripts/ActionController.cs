@@ -11,6 +11,7 @@ public class ActionController : MonoBehaviour
     [SerializeField] Movement movement;
     [SerializeField] Animator animator;
     [SerializeField] LayerMask ballLayer;
+    [SerializeField] BallControl ballControl;
     [SerializeField] string playerTag = "Player";
     [HideInInspector] Rigidbody ball;
     [Space]
@@ -145,11 +146,13 @@ public class ActionController : MonoBehaviour
             StartCoroutine("kickForceIncrementation");
         }
         if(Input.GetKeyUp(kickKey) && isKicking){
+            ballControl.canControlBall = false;
             movement.canMove = false;
             canShowKick = true;
             StopCoroutine("kickForceIncrementation");
             Invoke("handleKick", kickCooldown / 2);
             Invoke("stopKicking", kickCooldown / 2);
+            Invoke("allowBallControl", kickCooldown);
         }
 
         // 
@@ -166,7 +169,8 @@ public class ActionController : MonoBehaviour
             Invoke("stopTackling", tackleCooldown);
         }
         if(canShowTackle){
-            rigidbody.AddForce(tackleDirection * currentTackleSpeed * tackleForceMultiplier, ForceMode.Force);
+            handleTackleKick();
+            rigidbody.AddForce(tackleDirection * currentTackleSpeed * tackleForceMultiplier * 0.5f, ForceMode.Force);
         }
 
 
@@ -238,7 +242,9 @@ public class ActionController : MonoBehaviour
             yield return new WaitForSecondsRealtime(0.05f);
         }
     }
-
+    void allowBallControl(){
+        ballControl.canControlBall = true;
+    }
 
     // 
     // Tackling
@@ -252,6 +258,14 @@ public class ActionController : MonoBehaviour
         while(currentTackleSpeed < tackleSpeed){
             currentTackleSpeed += tackleMultiplier;
             yield return new WaitForSecondsRealtime(0.05f);
+        }
+    }
+
+    void handleTackleKick (){
+        Collider[] colliders = Physics.OverlapSphere(this.transform.position + movement.lastDirection - Vector3.up * kickDetectionOffset, kickDetectionRange, ballLayer);
+        for(int i = 0; i < colliders.Length; i++){
+            ball = colliders[i].transform.gameObject.GetComponent<Rigidbody>();
+            ball.AddForce(this.transform.forward * currentTackleSpeed, ForceMode.Impulse);
         }
     }
 
