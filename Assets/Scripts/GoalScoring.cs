@@ -52,8 +52,8 @@ public class GoalScoring : MonoBehaviour
     {
         if (!isScored)
         {
-            PlayConfetti();
             isScored = true;
+            PlayConfetti();
         }
     }
 

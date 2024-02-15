@@ -6,6 +6,7 @@ public class BallControl : MonoBehaviour
     [Space]
     [Header("References")]
     [SerializeField] Rigidbody rb;
+    [SerializeField] KickHandler kickHandler;
     [Space]
     [Header("Configuration")]
     [Space]
@@ -53,12 +54,22 @@ public class BallControl : MonoBehaviour
         Collider[] colliders = Physics.OverlapSphere(transform.position - new Vector3(0, detectionVerticalOffset, 0) + transform.forward, ballDetectionRange, ballLayer);
         for (int i = 0; i < colliders.Length; i++)
         {
-            Rigidbody ballRigidbody = colliders[i].GetComponent<Rigidbody>();
-            if (!ballRigidbody || !canControlBall)
+            GameObject ball = colliders[i].gameObject;
+            Rigidbody ballRigidbody = ball.GetComponent<Rigidbody>();
+
+            if (kickHandler.isKicking)
             {
-                Debug.LogError("Ball Rigidbody not found or you can't controll the ball!", gameObject);
+                Debug.LogWarning("Cant dribble ball when kicking", gameObject);
                 return;
             }
+
+            if ((!ballRigidbody || !canControlBall) && !kickHandler.isKicking)
+            {
+                Debug.LogWarning("Ball Rigidbody not found or you can't controll the ball!", gameObject);
+                return;
+            }
+
+            ball.transform.position = Vector3.Slerp(ball.transform.position, transform.position - new Vector3(0, detectionVerticalOffset, 0) + transform.forward, 5 * Time.deltaTime);
             ballRigidbody.velocity = rb.velocity;
         }
     }

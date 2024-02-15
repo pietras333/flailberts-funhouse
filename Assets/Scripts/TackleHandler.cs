@@ -42,26 +42,13 @@ public class TackleHandler : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(tackleKey) && !isTackling)
-        {
-            isTackling = true;
-            StartCoroutine("TackleForceIncrementation");
-        }
-        if (Input.GetKeyUp(tackleKey) && isTackling)
-        {
-            movement.canMove = false;
-            canShowTackle = true;
-            tackleDirection = movement.lastDirection;
-            StopCoroutine("TackleForceIncrementation");
-            StartCoroutine("TackleForceDecrease");
-        }
-        if (canShowTackle)
-        {
-            rb.AddForce(transform.forward * currentTackleForce * tackleForceMultiplier, ForceMode.Impulse);
-        }
+        CheckTacklingState();
+
+        UpdateTacklingState();
+
+        ClampTackleForce();
 
         animator.SetBool("isTackling", canShowTackle);
-        currentTackleForce = Mathf.Clamp(currentTackleForce, 0, tackleForce);
     }
 
     public void OnCollisionEnter(Collision collider)
@@ -76,6 +63,32 @@ public class TackleHandler : MonoBehaviour
             TackledStateController tackledStateController = collider.gameObject.GetComponent<TackledStateController>();
             tackledStateController.Tackled();
         }
+    }
+
+    void CheckTacklingState()
+    {
+        if (Input.GetKeyDown(tackleKey) && !isTackling)
+        {
+            isTackling = true;
+            StartCoroutine("TackleForceIncrementation");
+        }
+        if (Input.GetKeyUp(tackleKey) && isTackling)
+        {
+            movement.canMove = false;
+            canShowTackle = true;
+            tackleDirection = movement.lastDirection;
+            StopCoroutine("TackleForceIncrementation");
+            StartCoroutine("TackleForceDecrease");
+        }
+    }
+
+    void UpdateTacklingState()
+    {
+        if (canShowTackle)
+        {
+            rb.AddForce(transform.forward * currentTackleForce * tackleForceMultiplier, ForceMode.Impulse);
+        }
+
     }
 
     void StopTackling()
@@ -103,6 +116,11 @@ public class TackleHandler : MonoBehaviour
         }
         canShowTackle = false;
         Invoke("StopTackling", tackleCooldown);
+    }
+
+    void ClampTackleForce()
+    {
+        currentTackleForce = Mathf.Clamp(currentTackleForce, 0, tackleForce);
     }
 
 }

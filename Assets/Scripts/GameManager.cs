@@ -10,11 +10,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] CameraLock cameraLock;
     [SerializeField] List<GameObject> players = new List<GameObject>();
     [SerializeField] List<Transform> spawnPoints = new List<Transform>();
+    [SerializeField] List<GameObject> spawnedPlayers = new List<GameObject>();
+    [Space]
+    [Header("Configuration")]
+    [SerializeField] float playerReturnSpeed = 10f;
 
     void Start()
     {
-        SpawnPlayers();
         InitializeComponents();
+        SpawnPlayers();
+        AssignCameraTarget();
     }
 
     void InitializeComponents()
@@ -34,8 +39,8 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < players.Count; i++)
         {
-            GameObject player = Instantiate(players[i]);
-            player.transform.position = spawnPoints[i].transform.position;
+            GameObject player = Instantiate(players[i], spawnPoints[i].position, Quaternion.identity, null);
+            spawnedPlayers.Add(player);
         }
     }
 
@@ -43,8 +48,13 @@ public class GameManager : MonoBehaviour
     {
         for (int i = 0; i < players.Count; i++)
         {
-            GameObject player = players[i];
+            GameObject player = spawnedPlayers[i];
             player.transform.position = spawnPoints[i].position;
         }
+    }
+
+    void AssignCameraTarget()
+    {
+        cameraLock.playerTarget = spawnedPlayers[0].transform;
     }
 }

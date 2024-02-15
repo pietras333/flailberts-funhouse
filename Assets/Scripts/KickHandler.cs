@@ -53,6 +53,17 @@ public class KickHandler : MonoBehaviour
 
     void Update()
     {
+        CheckKickingState();
+
+        CheckUpForceState();
+
+        ClampForces();
+
+        animator.SetBool("isKicking", canShowKick);
+    }
+
+    void CheckKickingState()
+    {
         if (Input.GetKeyDown(kickKey) && !isKicking)
         {
             isKicking = true;
@@ -70,21 +81,6 @@ public class KickHandler : MonoBehaviour
             Invoke("StopKicking", kickCooldownHalf);
             Invoke("AllowBallControl", kickCooldown);
         }
-
-        if (Input.GetKeyDown(upForceKey) && !isUpForce)
-        {
-            isUpForce = true;
-            StartCoroutine("upForceIncrementation");
-        }
-        if (Input.GetKeyUp(upForceKey) && isUpForce)
-        {
-            StopCoroutine("upForceIncrementation");
-            stopUpForce();
-        }
-
-        currentUpForce = Mathf.Clamp(currentUpForce, 0, upForce);
-        currentKickForce = Mathf.Clamp(currentKickForce, 0, kickForce);
-        animator.SetBool("isKicking", canShowKick);
     }
 
     void StopKicking()
@@ -102,7 +98,7 @@ public class KickHandler : MonoBehaviour
             Rigidbody ball = colliders[i].transform.gameObject.GetComponent<Rigidbody>();
             if (!ball)
             {
-                Debug.LogError("Ball not detected!", gameObject);
+                Debug.LogError("Ball Rigidbody not detected!", gameObject);
                 return;
             }
             if (!isUpForce)
@@ -131,6 +127,20 @@ public class KickHandler : MonoBehaviour
         ballControl.canControlBall = true;
     }
 
+    void CheckUpForceState()
+    {
+        if (Input.GetKeyDown(upForceKey) && !isUpForce)
+        {
+            isUpForce = true;
+            StartCoroutine("upForceIncrementation");
+        }
+        if (Input.GetKeyUp(upForceKey) && isUpForce)
+        {
+            StopCoroutine("upForceIncrementation");
+            stopUpForce();
+        }
+    }
+
     IEnumerator upForceIncrementation()
     {
         while (currentUpForce < upForce)
@@ -144,5 +154,11 @@ public class KickHandler : MonoBehaviour
     {
         currentUpForce = 0;
         isUpForce = false;
+    }
+
+    void ClampForces()
+    {
+        currentUpForce = Mathf.Clamp(currentUpForce, 0, upForce);
+        currentKickForce = Mathf.Clamp(currentKickForce, 0, kickForce);
     }
 }
