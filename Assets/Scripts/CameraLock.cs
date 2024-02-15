@@ -1,29 +1,55 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraLock : MonoBehaviour
 {
     [Header("Camera Lock")]
     [Space]
-    [SerializeField] Camera camera;
-    [SerializeField] Transform ball;
-    [SerializeField] Transform player;
+    [Header("References")]
+    [SerializeField] Camera mainCamera;
+    [SerializeField] Transform ballTarget;
+    [SerializeField] public Transform playerTarget;
+    [Space]
+    [Header("Configuration")]
     [SerializeField] float followSpeed;
-    [HideInInspector] float originalPosZ;
+    [HideInInspector] float initialPositionZ;
 
-    void Start(){
-        originalPosZ = transform.position.z;
+    void Start()
+    {
+        InitializeComponents();
+        initialPositionZ = transform.position.z;
     }
 
-    void Update(){
-        Quaternion lookOnRotationBall = Quaternion.LookRotation(ball.transform.position - this.transform.position);
-        Quaternion lookOnRotationPlayer = Quaternion.LookRotation(player.transform.position - this.transform.position);
+    void InitializeComponents()
+    {
+        if (!mainCamera || !ballTarget || !playerTarget)
+        {
+            Debug.LogError("One or more references are missing in the CameraLock script.", gameObject);
+            return;
+        }
+    }
 
-        float distanceToBall = Vector3.Distance(player.transform.position, ball.transform.position);
-        Quaternion crossRotation = Quaternion.Slerp(lookOnRotationPlayer, lookOnRotationBall,  0.5f);
+    void Update()
+    {
+        MoveCameraToTargetPosition();
+        RotateCameraTowardsTargets();
+    }
 
-        this.transform.position = Vector3.Slerp(this.transform.position, new Vector3(player.transform.position.x + (distanceToBall * 0.5f), this.transform.position.y, originalPosZ), followSpeed * Time.deltaTime);
-        this.transform.rotation = Quaternion.Lerp(this.transform.rotation, crossRotation, followSpeed * Time.deltaTime);
+    void RotateCameraTowardsTargets()
+    {
+        Quaternion lookRotationBall = Quaternion.LookRotation(ballTarget.position - transform.position);
+        Quaternion lookRotationPlayer = Quaternion.LookRotation(playerTarget.position - transform.position);
+        Quaternion crossRotation = Quaternion.Slerp(lookRotationPlayer, lookRotationBall, 0.5f);
+
+        transform.rotation = Quaternion.Lerp(transform.rotation, crossRotation, followSpeed * Time.deltaTime);
+    }
+
+    void MoveCameraToTargetPosition()
+    {
+        float distanceToBall = Vector3.Distance(playerTarget.transform.position, ballTarget.position);
+        float targetPositionX = playerTarget.position.x + (distanceToBall * 0.5f);
+
+        Vector3 targetPosition = new Vector3(targetPositionX, transform.position.y, initialPositionZ);
+
+        transform.position = Vector3.Slerp(transform.position, targetPosition, followSpeed * Time.deltaTime);
     }
 }

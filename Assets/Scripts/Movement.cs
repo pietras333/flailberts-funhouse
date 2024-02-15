@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Movement : MonoBehaviour
@@ -7,88 +5,103 @@ public class Movement : MonoBehaviour
     [Header("Movement")]
     [Space]
     [Header("References")]
-    [SerializeField] Rigidbody rigidbody;
-    [SerializeField] float rigidbodyDrag = 0.5f;
+    [SerializeField] Animator animator;
+    [SerializeField] Rigidbody rb;
     [Space]
-    [Header("Variables")]
+    [Header("Configuration")]
     [SerializeField] KeyCode jogLeftKey = KeyCode.Q;
     [SerializeField] KeyCode jogRightKey = KeyCode.E;
-    [SerializeField] public bool canMove = true;
     [SerializeField] public float speed = 1000f;
     [SerializeField] public float maxSpeed = 5f;
     [SerializeField] float stopSmoothness = 15f;
     [SerializeField] float rotationSmoothness = 5f;
-    [HideInInspector] float directionX; 
-    [HideInInspector] float directionZ;
+    [SerializeField] float rigidbodyDrag = 0.5f;
     [HideInInspector] public Vector3 direction;
     [HideInInspector] public Vector3 lastDirection;
+    [Space]
+    [Header("States")]
+    [SerializeField] public bool canMove = true;
 
+    void OnDrawGizmosSelected()
+    {
+        DebugDirectionGizmos();
+    }
 
-    // 
-    // VISUAL DEBBUGING
-    // 
-
-    void debugDirectionGizmos(){
+    void DebugDirectionGizmos()
+    {
         Gizmos.color = Color.green;
-        Vector3 direction = new Vector3(transform.position.x + directionX * 2f, transform.position.y, transform.position.z + directionZ * 2f);
-        Gizmos.DrawLine(transform.position, direction);
+        Vector3 dir = new Vector3(transform.position.x + direction.x * 2f, transform.position.y, transform.position.z + direction.z * 2f);
+        Gizmos.DrawLine(transform.position, dir);
     }
 
-    public void OnDrawGizmosSelected(){
-        debugDirectionGizmos();
+    void Start()
+    {
+        InitializeComponents();
     }
 
-
-    // 
-    // Running functions
-
-    public void Start(){
-        rigidbody.drag = rigidbodyDrag;
+    void InitializeComponents()
+    {
+        if (!animator || !rb)
+        {
+            Debug.LogError("One or more references are missing in the Movement script.", gameObject);
+            return;
+        }
+        rb.drag = rigidbodyDrag;
     }
 
-    public void Update(){
-        directionX = Input.GetAxisRaw("Horizontal");
-        directionZ = Input.GetAxisRaw("Vertical");
+    void Update()
+    {
+        CalculateDirection();
+    }
+
+    void FixedUpdate()
+    {
+        Move();
+        RotateTowardDirection();
+        HandleJogging();
+        ClampPlayerVelocity();
+    }
+
+    void CalculateDirection()
+    {
+        float directionX = Input.GetAxisRaw("Horizontal");
+        float directionZ = Input.GetAxisRaw("Vertical");
         direction = new Vector3(directionX, 0f, directionZ).normalized;
     }
 
-    public void FixedUpdate(){
-        move();
-        rotateTowardDirection();
-
-        if(Input.GetKeyDown(jogLeftKey)){
-            rigidbody.AddForce(-this.transform.right * 5f, ForceMode.Impulse);
+    void Move()
+    {
+        if (direction == Vector3.zero || !canMove)
+        {
+            rb.velocity = Vector3.Slerp(rb.velocity, new Vector3(0, rb.velocity.y, 0), Time.fixedDeltaTime * stopSmoothness);
+            return;
         }
-        if(Input.GetKeyDown(jogRightKey)){
-            rigidbody.AddForce(this.transform.right * 5f, ForceMode.Impulse);
-
-        }
+        rb.AddForce(direction * speed * Time.fixedDeltaTime, ForceMode.Force);
     }
 
-    // 
-    // Movement
-    // 
-    
-    void move(){
-        if(direction == Vector3.zero || !canMove){
-            rigidbody.velocity = Vector3.Slerp(rigidbody.velocity, new Vector3(0,rigidbody.velocity.y, 0), Time.fixedDeltaTime * stopSmoothness);
-        }else{
-            rigidbody.AddForce(direction * speed * Time.fixedDeltaTime, ForceMode.Force); 
-        }
-        rigidbody.velocity = Vector3.ClampMagnitude(rigidbody.velocity, maxSpeed);
-    }
-
-    // 
-    // Rotation
-    // 
-
-    void rotateTowardDirection(){
+    void RotateTowardDirection()
+    {
         if (direction != Vector3.zero)
         {
             lastDirection = direction;
         }
         Quaternion targetRotation = Quaternion.LookRotation(lastDirection, Vector3.up);
-        transform.rotation = Quaternion.Slerp(this.transform.rotation, targetRotation, rotationSmoothness * Time.deltaTime);
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSmoothness * Time.deltaTime);
     }
 
+    void HandleJogging()
+    {
+        if (Input.GetKeyDown(jogLeftKey))
+        {
+            rb.AddForce(-transform.right * 5f, ForceMode.Impulse);
+        }
+        if (Input.GetKeyDown(jogRightKey))
+        {
+            rb.AddForce(transform.right * 5f, ForceMode.Impulse);
+        }
+    }
+    void ClampPlayerVelocity()
+    {
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
+    }
 }

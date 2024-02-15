@@ -6,37 +6,82 @@ public class GoalScoring : MonoBehaviour
 {
     [Header("Goal Scoring")]
     [Space]
-    [SerializeField] bool isScored;
-    [SerializeField] Transform ball;
-    [SerializeField] Collider collider;
+    [Header("References")]
+    [SerializeField] GameManager gameManager;
+    [SerializeField] Transform ballTransform;
+    [SerializeField] Collider goalCollider;
+    [SerializeField] List<ParticleSystem> confettiParticles = new List<ParticleSystem>();
+    [Space]
+    [Header("Configuration")]
     [SerializeField] float ballDetectionThreshold = 1f;
     [SerializeField] float gameResetCooldown = 5f;
-    [SerializeField] float ballStopSpeed = 20f;
-    [SerializeField] List <ParticleSystem> confettis = new List<ParticleSystem>();
+    [Header("States")]
+    [SerializeField] bool isScored;
 
-    public void OnTriggerStay(Collider foreignCollider){
-        if(foreignCollider.gameObject.layer == ball.gameObject.layer){
-            if(collider.bounds.Contains(foreignCollider.bounds.min * ballDetectionThreshold) && collider.bounds.Contains(foreignCollider.bounds.max * ballDetectionThreshold)){
-                Rigidbody ballRigidbody = ball.transform.GetComponent<Rigidbody>();
-                if(!isScored){
-                    handleConfettis();
-                }
-                Invoke("handleGameReset", gameResetCooldown);
-                ballRigidbody.velocity = Vector3.zero;
-            }
+    public void OnTriggerStay(Collider otherCollider)
+    {
+        HandleScoring();
+        ResetGameAfterCooldown();
+    }
+
+    void Start()
+    {
+        InitializeComponents();
+    }
+
+    void InitializeComponents()
+    {
+        if (!gameManager || !ballTransform || !goalCollider || confettiParticles.Count == 0)
+        {
+            Debug.LogError("One or more references are missing in the GoalScoring script.", gameObject);
+            return;
         }
     }
 
-    void handleConfettis(){
-        for(int i = 0; i < confettis.Count; i++){
-            confettis[i].Play();
+    private bool IsBallInGoalBounds(Collider ballCollider)
+    {
+        bool isInBounds = !(goalCollider.bounds.Contains(ballCollider.bounds.min * ballDetectionThreshold) && goalCollider.bounds.Contains(ballCollider.bounds.max * ballDetectionThreshold));
+        if (isInBounds)
+        {
+            return false;
+        }
+        return true;
+    }
+
+    private void HandleScoring()
+    {
+        if (!isScored)
+        {
+            PlayConfetti();
+            isScored = true;
+        }
+    }
+
+    private void ResetGameAfterCooldown()
+    {
+        if (gameResetCooldown <= 0)
+        {
+            Debug.LogWarning("Game reset cooldown is not set or invalid.", gameObject);
+            return;
+        }
+        Invoke("HandleGameReset", gameResetCooldown);
+        Rigidbody ballRigidbody = ballTransform.GetComponent<Rigidbody>();
+        ballRigidbody.velocity = Vector3.zero;
+    }
+
+    void PlayConfetti()
+    {
+        foreach (ParticleSystem confetti in confettiParticles)
+        {
+            confetti.Play();
         }
         isScored = true;
     }
 
-    
-    void handleGameReset(){
-        ball.transform.position = new Vector3(0,10,0);
+    void HandleGameReset()
+    {
+        ballTransform.position = new Vector3(0, 10, 0);
+        gameManager.ResetPlayersPosition();
         isScored = false;
     }
 }
