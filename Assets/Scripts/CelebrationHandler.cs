@@ -8,6 +8,7 @@ public class CelebrationHandler : MonoBehaviour
     [Space]
     [Header("References")]
     [SerializeField] Animator animator;
+    [SerializeField] Movement movement;
     [Space]
     [Header("Configuration")]
     [SerializeField] int animationsCount;
@@ -21,7 +22,7 @@ public class CelebrationHandler : MonoBehaviour
 
     void InitializeComponents()
     {
-        if (!animator)
+        if (!animator || !movement)
         {
             Debug.LogError("One or more references are missing in the CelebrationHandler script.", gameObject);
             return;
@@ -31,13 +32,14 @@ public class CelebrationHandler : MonoBehaviour
     public void PlayRandomAnimation()
     {
         int animationIndex = Random.Range(0, animationsCount);
-        print(animationIndex);
         animator.SetInteger("celebrationIndex", animationIndex);
+        movement.canMove = false;
         Invoke("ResetAnimatorState", animationDuration);
     }
 
     void ResetAnimatorState()
     {
         animator.SetInteger("celebrationIndex", -1);
+        movement.canMove = true;
     }
 }

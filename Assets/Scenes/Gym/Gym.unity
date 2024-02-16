@@ -10718,7 +10718,6 @@ MonoBehaviour:
   - {fileID: 1375010139}
   ballDetectionThreshold: 1
   gameResetCooldown: 8
-  spawnPoint: {x: 0, y: 10, z: 0}
   ballTag: Ball
   isScored: 0
 --- !u!1001 &855199721
@@ -29032,7 +29031,6 @@ MonoBehaviour:
   - {fileID: 1946667910}
   ballDetectionThreshold: 1
   gameResetCooldown: 8
-  spawnPoint: {x: 0, y: 10, z: 0}
   ballTag: Ball
   isScored: 0
 --- !u!1001 &2135323401

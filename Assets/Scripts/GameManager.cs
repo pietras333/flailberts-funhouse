@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
     {
         if (!cameraLock || players.Count == 0 || spawnPoints.Count == 0)
         {
-            Debug.LogError("One or more references in the GameManager not found!", gameObject);
+            Debug.Log("One or more references in the GameManager not found!", gameObject);
         }
         if (players.Count != spawnPoints.Count)
         {
