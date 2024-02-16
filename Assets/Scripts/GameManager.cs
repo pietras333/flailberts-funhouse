@@ -11,9 +11,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] List<GameObject> players = new List<GameObject>();
     [SerializeField] List<Transform> spawnPoints = new List<Transform>();
     [SerializeField] List<GameObject> spawnedPlayers = new List<GameObject>();
-    [Space]
-    [Header("Configuration")]
-    [SerializeField] float playerReturnSpeed = 10f;
 
     void Start()
     {
@@ -49,7 +46,7 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < players.Count; i++)
         {
             GameObject player = spawnedPlayers[i];
-            player.transform.position = spawnPoints[i].position;
+            player.GetComponent<Rigidbody>().MovePosition(spawnPoints[i].position);
         }
     }
 

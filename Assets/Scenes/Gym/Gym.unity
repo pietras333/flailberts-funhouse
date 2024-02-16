@@ -4085,7 +4085,6 @@ MonoBehaviour:
   - {fileID: 1416143691}
   - {fileID: 1998691624}
   spawnedPlayers: []
-  playerReturnSpeed: 10
 --- !u!1001 &315416593
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10719,6 +10718,7 @@ MonoBehaviour:
   - {fileID: 1375010139}
   ballDetectionThreshold: 1
   gameResetCooldown: 8
+  spawnPoint: {x: 0, y: 10, z: 0}
   ballTag: Ball
   isScored: 0
 --- !u!1001 &855199721
@@ -29032,6 +29032,7 @@ MonoBehaviour:
   - {fileID: 1946667910}
   ballDetectionThreshold: 1
   gameResetCooldown: 8
+  spawnPoint: {x: 0, y: 10, z: 0}
   ballTag: Ball
   isScored: 0
 --- !u!1001 &2135323401
@@ -29879,7 +29880,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3312355593909908886}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 4, z: 0}
+  m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []

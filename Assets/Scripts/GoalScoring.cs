@@ -16,6 +16,7 @@ public class GoalScoring : MonoBehaviour
     [SerializeField] float ballDetectionThreshold = 1f;
     [SerializeField] float gameResetCooldown = 8f;
     [SerializeField] string ballTag = "Ball";
+    [HideInInspector] Vector3 spawnPoint;
     [Header("States")]
     [SerializeField] bool isScored;
 
@@ -27,6 +28,7 @@ public class GoalScoring : MonoBehaviour
     void Start()
     {
         InitializeComponents();
+        spawnPoint = ballTransform.transform.position;
     }
 
     void InitializeComponents()
@@ -72,8 +74,6 @@ public class GoalScoring : MonoBehaviour
             return;
         }
         Invoke("HandleGameReset", gameResetCooldown);
-        Rigidbody ballRigidbody = ballTransform.GetComponent<Rigidbody>();
-        ballRigidbody.velocity = Vector3.zero;
     }
 
     void PlayConfetti()
@@ -87,7 +87,10 @@ public class GoalScoring : MonoBehaviour
 
     void HandleGameReset()
     {
-        ballTransform.position = new Vector3(0, 10, 0);
+        Rigidbody ballRb = ballTransform.GetComponent<Rigidbody>();
+        ballRb.GetComponent<Rigidbody>().MovePosition(spawnPoint);
+        ballRb.GetComponent<Rigidbody>().velocity = Vector3.zero;
+
         gameManager.ResetPlayersPosition();
         isScored = false;
     }
