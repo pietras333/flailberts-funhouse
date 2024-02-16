@@ -14,14 +14,14 @@ public class GoalScoring : MonoBehaviour
     [Space]
     [Header("Configuration")]
     [SerializeField] float ballDetectionThreshold = 1f;
-    [SerializeField] float gameResetCooldown = 5f;
+    [SerializeField] float gameResetCooldown = 8f;
+    [SerializeField] string ballTag = "Ball";
     [Header("States")]
     [SerializeField] bool isScored;
 
     public void OnTriggerStay(Collider otherCollider)
     {
-        HandleScoring();
-        ResetGameAfterCooldown();
+        HandleScoring(otherCollider);
     }
 
     void Start()
@@ -48,12 +48,19 @@ public class GoalScoring : MonoBehaviour
         return true;
     }
 
-    private void HandleScoring()
+    private void HandleScoring(Collider collider)
     {
-        if (!isScored)
+        bool isInBounds = IsBallInGoalBounds(collider);
+        if (!isScored && collider.tag == ballTag && isInBounds)
         {
             isScored = true;
+
+            BallData ballData = collider.GetComponent<BallData>();
+            GameObject scorer = ballData.lastTouchedBy;
+
+            scorer.GetComponent<CelebrationHandler>().PlayRandomAnimation();
             PlayConfetti();
+            ResetGameAfterCooldown();
         }
     }
 

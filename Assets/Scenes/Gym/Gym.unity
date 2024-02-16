@@ -4084,6 +4084,8 @@ MonoBehaviour:
   - {fileID: 780744595}
   - {fileID: 1416143691}
   - {fileID: 1998691624}
+  spawnedPlayers: []
+  playerReturnSpeed: 10
 --- !u!1001 &315416593
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10716,7 +10718,8 @@ MonoBehaviour:
   - {fileID: 1960269968}
   - {fileID: 1375010139}
   ballDetectionThreshold: 1
-  gameResetCooldown: 5
+  gameResetCooldown: 8
+  ballTag: Ball
   isScored: 0
 --- !u!1001 &855199721
 PrefabInstance:
@@ -29028,7 +29031,8 @@ MonoBehaviour:
   - {fileID: 1177507121}
   - {fileID: 1946667910}
   ballDetectionThreshold: 1
-  gameResetCooldown: 5
+  gameResetCooldown: 8
+  ballTag: Ball
   isScored: 0
 --- !u!1001 &2135323401
 PrefabInstance:
@@ -29898,7 +29902,7 @@ GameObject:
   - component: {fileID: 3312355593909908887}
   m_Layer: 6
   m_Name: Ball
-  m_TagString: Untagged
+  m_TagString: Ball
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29923,9 +29927,13 @@ MonoBehaviour:
   groundCheckRange: 0.25
   groundedMaxSpeed: 13
   inAirMaxSpeed: 15
-  playerTag: Player
+  playerLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  playerCheckRange: 1
   ballMaxSpeed: 0
   isGrounded: 0
+  lastTouchedBy: {fileID: 0}
 --- !u!54 &3312355593909908888
 Rigidbody:
   m_ObjectHideFlags: 0

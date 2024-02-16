@@ -13,12 +13,13 @@ public class BallData : MonoBehaviour
     [SerializeField] float groundCheckRange = 0.25f;
     [SerializeField] float groundedMaxSpeed = 13f;
     [SerializeField] float inAirMaxSpeed = 15f;
-    [SerializeField] string playerTag = "Player";
+    [SerializeField] LayerMask playerLayer;
+    [SerializeField] float playerCheckRange = 0.65f;
     [SerializeField] float ballMaxSpeed;
     [Space]
     [Header("States")]
     [SerializeField] bool isGrounded;
-    [HideInInspector] GameObject lastTouchedBy;
+    [HideInInspector] public GameObject lastTouchedBy;
 
     void Start()
     {
@@ -37,22 +38,19 @@ public class BallData : MonoBehaviour
 
     void Update()
     {
+        HandlePlayerRecognition();
         isGrounded = Physics.CheckSphere(groundCheck.position, groundCheckRange, groundLayer);
         ballMaxSpeed = isGrounded ? groundedMaxSpeed : inAirMaxSpeed;
     }
 
-    public void OnCollisionEnter(Collision collision)
+    void HandlePlayerRecognition()
     {
-        HandleCollision(collision);
-    }
-
-    void HandleCollision(Collision collision)
-    {
-        GameObject colliderGameObject = collision.gameObject;
-        if (colliderGameObject != lastTouchedBy && colliderGameObject.CompareTag(playerTag))
+        Collider[] players = Physics.OverlapSphere(transform.position, playerCheckRange, playerLayer);
+        if (players.Length <= 0)
         {
-            lastTouchedBy = colliderGameObject;
+            return;
         }
+        lastTouchedBy = players[players.Length - 1].gameObject;
     }
 
     void FixedUpdate()
