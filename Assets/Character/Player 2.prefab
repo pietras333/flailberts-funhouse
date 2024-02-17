@@ -405,6 +405,7 @@ GameObject:
   - component: {fileID: 4198668508849885656}
   - component: {fileID: 2287379856802977605}
   - component: {fileID: 5067606775666616767}
+  - component: {fileID: 5341946542445073669}
   m_Layer: 7
   m_Name: Player 2
   m_TagString: Player
@@ -634,8 +635,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 661358668632941248}
   movement: {fileID: 3052802856123215931}
-  animationsCount: 3
+  animationsCount: 0
   animationDuration: 3
+--- !u!114 &5341946542445073669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1153631207215106096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 671b1150f2fb56f4fb5a914091723e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  kickHandler: {fileID: 8841284610068221173}
+  runHandler: {fileID: 9168418148512489305}
+  tackleHandler: {fileID: 6288849848243867709}
+  movement: {fileID: 3052802856123215931}
+  kickLevel: 1
+  kickForceEnhancement: 1.25
+  tackleLevel: 1
+  tackleForceEnhancement: 1.05
+  runLevel: 1
+  runMaxSpeedEnchancemenet: 1.1
+  runStaminaEnchancement: 1.025
+  movementLevel: 1
+  movementSpeedEnchancement: 1.15
+  movementMaxSpeedEnchancement: 1.05
 --- !u!1 &1392346402591818186
 GameObject:
   m_ObjectHideFlags: 0

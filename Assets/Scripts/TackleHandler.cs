@@ -12,10 +12,10 @@ public class TackleHandler : MonoBehaviour
     [Space]
     [Header("Configuration")]
     [SerializeField] KeyCode tackleKey = KeyCode.G;
-    [SerializeField] float tackleCooldown = 0.25f;
-    [SerializeField] float tackleForce = 7f;
+    [SerializeField] public float tackleCooldown = 0.25f;
+    [SerializeField] public float tackleForce = 7f;
     [SerializeField, Range(0.5f, 3)] float tackleForceMultiplier = 0.7f;
-    [SerializeField] float tackleForceAccumulator = 0.5f;
+    [SerializeField] public float tackleForceAccumulator = 0.5f;
     [SerializeField] string playerTag = "Player";
     [Header("Detection")]
     [SerializeField] Vector3 tackleDirection;

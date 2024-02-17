@@ -10,7 +10,7 @@ public class CameraLock : MonoBehaviour
     [SerializeField] public Transform playerTarget;
     [Space]
     [Header("Configuration")]
-    [SerializeField] float followSpeed;
+    [SerializeField] float followSpeed = 0.5f;
     [HideInInspector] float initialPositionZ;
 
     void Start()

@@ -29604,7 +29604,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 919132148755920979}
   m_LocalRotation: {x: -0, y: -0.70710576, z: -0, w: 0.70710784}
-  m_LocalPosition: {x: 14.75, y: 0, z: 0}
+  m_LocalPosition: {x: 14.5, y: 0, z: 0}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -29922,14 +29922,14 @@ MonoBehaviour:
   groundCheck: {fileID: 3306018044463277052}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 0
   groundCheckRange: 0.25
   groundedMaxSpeed: 13
   inAirMaxSpeed: 15
   playerLayer:
     serializedVersion: 2
     m_Bits: 128
-  playerCheckRange: 1
+  playerCheckRange: 0.65
   ballMaxSpeed: 0
   isGrounded: 0
   lastTouchedBy: {fileID: 0}

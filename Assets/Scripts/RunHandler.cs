@@ -11,11 +11,11 @@ public class RunHandler : MonoBehaviour
     [SerializeField] Animator animator;
     [Space]
     [Header("Configuration")]
-    [SerializeField] float maxRunSpeed = 8f;
+    [SerializeField] public float maxRunSpeed = 8f;
     [SerializeField] KeyCode runKey = KeyCode.LeftShift;
-    [SerializeField] float maxStamina = 20f;
-    [SerializeField] float staminaDecreaseMultiplier = 0.01f;
-    [SerializeField] float staminaIncreaseMultiplier = 0.0075f;
+    [SerializeField] public float maxStamina = 20f;
+    [SerializeField] public float staminaDecreaseMultiplier = 0.01f;
+    [SerializeField] public float staminaIncreaseMultiplier = 0.0075f;
     [Space]
     [Header("States")]
     [SerializeField] float currentStamina;

@@ -13,16 +13,16 @@ public class KickHandler : MonoBehaviour
     [Space]
     [Header("Configuration")]
     [SerializeField] KeyCode kickKey = KeyCode.F;
-    [SerializeField] float kickCooldown = 0.25f;
+    [SerializeField] public float kickCooldown = 0.25f;
     [HideInInspector] float kickCooldownHalf;
-    [SerializeField] float kickForce = 10f;
+    [SerializeField] public float kickForce = 10f;
     [SerializeField, Range(1, 2)] float kickForceMultiplier = 2f;
-    [SerializeField] float kickForceAccumulator = 0.65f;
+    [SerializeField] public float kickForceAccumulator = 0.65f;
     [Space]
     [Header("Up Force")]
     [SerializeField] KeyCode upForceKey = KeyCode.Space;
-    [SerializeField] float upForceAccumulator = 0.5f;
-    [SerializeField] float upForce = 10f;
+    [SerializeField] public float upForceAccumulator = 0.5f;
+    [SerializeField] public float upForce = 10f;
     [SerializeField] float currentUpForce;
     [Space]
     [Header("Detection")]
