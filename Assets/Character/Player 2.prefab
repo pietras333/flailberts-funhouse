@@ -522,6 +522,8 @@ MonoBehaviour:
   maxStamina: 20
   staminaDecreaseMultiplier: 0.01
   staminaIncreaseMultiplier: 0.0075
+  animationBaseSpeed: 2
+  animationRunSpeed: 3.5
   currentStamina: 0
   isRunning: 0
 --- !u!114 &8841284610068221173

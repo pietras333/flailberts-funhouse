@@ -47,6 +47,7 @@ public class RunHandler : MonoBehaviour
         ClampStamina();
 
         animator.SetBool("isRunning", movement.direction != Vector3.zero);
+        animator.SetBool("isSprinting", movement.direction != Vector3.zero && isRunning);
     }
 
     void CheckRunningState()
