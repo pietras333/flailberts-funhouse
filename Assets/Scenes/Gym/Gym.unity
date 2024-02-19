@@ -29922,7 +29922,7 @@ MonoBehaviour:
   groundCheck: {fileID: 3306018044463277052}
   groundLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 512
   groundCheckRange: 0.25
   groundedMaxSpeed: 13
   inAirMaxSpeed: 15

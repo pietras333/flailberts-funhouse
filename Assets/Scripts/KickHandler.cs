@@ -1,6 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Video;
 
 public class KickHandler : MonoBehaviour
 {
@@ -28,7 +31,12 @@ public class KickHandler : MonoBehaviour
     [Header("Detection")]
     [SerializeField] LayerMask ballLayer;
     [SerializeField] float kickDetectionRange = 0.85f;
-    [SerializeField] float kickDetectionOffset = 0.5f;
+    [Space]
+    [Header("Ground Kick")]
+    [SerializeField] float groundKickDetectionOffset = 0.5f;
+    [Space]
+    [Header("Volley Kick")]
+    [SerializeField] float volleyKickDetectionOffset = 0f;
     [Space]
     [Header("States")]
     [SerializeField] float currentKickForce;
@@ -92,22 +100,35 @@ public class KickHandler : MonoBehaviour
 
     void HandleKick()
     {
-        Collider[] colliders = Physics.OverlapSphere(this.transform.position + movement.lastDirection - Vector3.up * kickDetectionOffset, kickDetectionRange, ballLayer);
-        for (int i = 0; i < colliders.Length; i++)
+        HandleBasicKick();
+    }
+
+    void HandleBasicKick()
+    {
+        Collider[] capsuleColliders = Physics.OverlapCapsule(transform.position + movement.lastDirection - Vector3.up * 0.5f, transform.position + Vector3.up * 0.5f, 0.5f, ballLayer);
+        for (int i = 0; i < capsuleColliders.Length; i++)
         {
-            Rigidbody ball = colliders[i].transform.gameObject.GetComponent<Rigidbody>();
-            if (!ball)
+            Rigidbody ballRb = capsuleColliders[i].GetComponent<Rigidbody>();
+            BallData ballData = capsuleColliders[i].GetComponent<BallData>();
+            if (!ballRb || !ballData)
             {
-                Debug.LogError("Ball Rigidbody not detected!", gameObject);
-                return;
+                Debug.LogWarning("Ball rigidbody and/or BallData script not found on kick!", gameObject);
             }
+            GameObject ball = capsuleColliders[i].transform.gameObject;
+
+            Vector3 ballPosition = ball.transform.position;
+            Vector3 thisPosition = transform.position;
+
+            float heightDifference = math.abs(ballPosition.y - thisPosition.y);
+            animator.SetFloat("BallPosY", heightDifference);
+
             if (!isUpForce)
             {
-                ball.AddForce(this.transform.forward * currentKickForce * kickForceMultiplier, ForceMode.Impulse);
+                ballRb.AddForce(this.transform.forward * currentKickForce * kickForceMultiplier, ForceMode.Impulse);
                 return;
             }
-            ball.AddForce(this.transform.forward * currentKickForce * kickForceMultiplier + Vector3.up * currentUpForce, ForceMode.Impulse);
-
+            ballRb.AddForce(this.transform.forward * currentKickForce * kickForceMultiplier + Vector3.up * currentUpForce, ForceMode.Impulse);
+            ballData.lastTouchedBy = transform.gameObject;
         }
         currentUpForce = 0;
         currentKickForce = 0;
@@ -137,7 +158,7 @@ public class KickHandler : MonoBehaviour
         if (Input.GetKeyUp(upForceKey) && isUpForce)
         {
             StopCoroutine("upForceIncrementation");
-            stopUpForce();
+            StopUpForce();
         }
     }
 
@@ -150,7 +171,7 @@ public class KickHandler : MonoBehaviour
         }
     }
 
-    void stopUpForce()
+    void StopUpForce()
     {
         currentUpForce = 0;
         isUpForce = false;
