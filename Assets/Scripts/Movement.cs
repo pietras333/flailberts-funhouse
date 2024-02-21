@@ -7,17 +7,27 @@ public class Movement : MonoBehaviour
     [Header("References")]
     [SerializeField] Animator animator;
     [SerializeField] Rigidbody rb;
+    [SerializeField] BallControl ballControl;
+    [SerializeField] RunHandler runHandler;
     [Space]
     [Header("Configuration")]
     [SerializeField] KeyCode jogLeftKey = KeyCode.Q;
     [SerializeField] KeyCode jogRightKey = KeyCode.E;
     [SerializeField] public float speed = 1000f;
+    [HideInInspector] float initialSpeed;
     [SerializeField] public float maxSpeed = 5f;
+    [HideInInspector] public float initialMaxSpeed;
     [SerializeField] float stopSmoothness = 15f;
     [SerializeField] float rotationSmoothness = 5f;
     [SerializeField] float rigidbodyDrag = 0.5f;
     [HideInInspector] public Vector3 direction;
     [HideInInspector] public Vector3 lastDirection;
+    [Space]
+    [Header("Dribbling")]
+    [SerializeField] public float dribbleSpeed;
+    [SerializeField] float dribbleSpeedMultiplier = 0.85f;
+    [SerializeField] public float dribbleMaxSpeed;
+    [SerializeField] float dribbleMaxSpeedMultiplier = 0.8f;
     [Space]
     [Header("States")]
     [SerializeField] public bool canMove = true;
@@ -37,11 +47,15 @@ public class Movement : MonoBehaviour
     void Start()
     {
         InitializeComponents();
+        initialSpeed = speed;
+        dribbleSpeed = initialSpeed * dribbleSpeedMultiplier;
+        initialMaxSpeed = maxSpeed;
+        dribbleMaxSpeed = initialMaxSpeed * dribbleMaxSpeedMultiplier;
     }
 
     void InitializeComponents()
     {
-        if (!animator || !rb)
+        if (!animator || !rb || !ballControl || !runHandler)
         {
             Debug.LogError("One or more references are missing in the Movement script.", gameObject);
             return;
@@ -52,6 +66,7 @@ public class Movement : MonoBehaviour
     void Update()
     {
         CalculateDirection();
+        HandleMovementValues();
     }
 
     void FixedUpdate()
@@ -60,6 +75,17 @@ public class Movement : MonoBehaviour
         RotateTowardDirection();
         HandleJogging();
         ClampPlayerVelocity();
+    }
+
+    void HandleMovementValues()
+    {
+        if (runHandler.isRunning)
+        {
+            return;
+        }
+        maxSpeed = ballControl.isDribbling ? dribbleMaxSpeed : initialMaxSpeed;
+        speed = ballControl.isDribbling ? dribbleSpeed : initialSpeed;
+
     }
 
     void CalculateDirection()

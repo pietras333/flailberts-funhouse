@@ -17,6 +17,7 @@ public class BallControl : MonoBehaviour
     [Space]
     [Header("States")]
     [SerializeField] public bool canControlBall = true;
+    [SerializeField] public bool isDribbling;
 
     void OnDrawGizmosSelected()
     {
@@ -51,7 +52,14 @@ public class BallControl : MonoBehaviour
 
     void DetectAndControlBall()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position - new Vector3(0, detectionVerticalOffset, 0) + transform.forward, ballDetectionRange, ballLayer);
+        Vector3 checkBallPosition = transform.position - new Vector3(0, detectionVerticalOffset, 0) + transform.forward;
+        Collider[] colliders = Physics.OverlapSphere(checkBallPosition, ballDetectionRange, ballLayer);
+
+        if (colliders.Length < 1)
+        {
+            isDribbling = false;
+        }
+
         for (int i = 0; i < colliders.Length; i++)
         {
             GameObject ball = colliders[i].gameObject;
@@ -68,7 +76,7 @@ public class BallControl : MonoBehaviour
                 Debug.LogWarning("Ball Rigidbody not found or you can't controll the ball!", gameObject);
                 return;
             }
-
+            isDribbling = true;
             ball.transform.position = Vector3.Slerp(ball.transform.position, transform.position - new Vector3(0, detectionVerticalOffset, 0) + transform.forward, 5 * Time.deltaTime);
             ballRigidbody.velocity = rb.velocity;
         }

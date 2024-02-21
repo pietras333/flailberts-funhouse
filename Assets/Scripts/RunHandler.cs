@@ -9,6 +9,7 @@ public class RunHandler : MonoBehaviour
     [Header("References")]
     [SerializeField] Movement movement;
     [SerializeField] Animator animator;
+    [SerializeField] BallControl ballControl;
     [Space]
     [Header("Configuration")]
     [SerializeField] public float maxRunSpeed = 8f;
@@ -19,18 +20,17 @@ public class RunHandler : MonoBehaviour
     [Space]
     [Header("States")]
     [SerializeField] float currentStamina;
-    [SerializeField] bool isRunning;
-    [HideInInspector] float initialMaxSpeed;
+    [SerializeField] public bool isRunning;
+
 
     void Start()
     {
-        initialMaxSpeed = movement.maxSpeed;
         currentStamina = maxStamina;
     }
 
     void InitializeComponents()
     {
-        if (!movement || !animator)
+        if (!movement || !animator || !ballControl)
         {
             Debug.LogError("One or more references are missing in the RunHandler script.", gameObject);
             return;
@@ -52,11 +52,12 @@ public class RunHandler : MonoBehaviour
 
     void CheckRunningState()
     {
-        if (Input.GetKeyDown(runKey) && currentStamina > 0)
+        if (Input.GetKeyDown(runKey) && currentStamina > 0 && !ballControl.isDribbling)
         {
+            movement.maxSpeed = maxRunSpeed;
             isRunning = true;
         }
-        else if (Input.GetKeyUp(runKey) || currentStamina <= 0f)
+        else if (Input.GetKeyUp(runKey) || currentStamina <= 0f || ballControl.isDribbling)
         {
             isRunning = false;
         }
@@ -67,7 +68,6 @@ public class RunHandler : MonoBehaviour
         {
             StopCoroutine("HandleStaminaIncrease");
             StartCoroutine("HandleStaminaDecrease");
-            movement.maxSpeed = maxRunSpeed;
             return;
         }
         if (!Input.GetKeyDown(runKey))
@@ -75,7 +75,6 @@ public class RunHandler : MonoBehaviour
             StopCoroutine("HandleStaminaDecrease");
             StartCoroutine("HandleStaminaIncrease");
         }
-        movement.maxSpeed = initialMaxSpeed;
     }
 
     void ClampStamina()

@@ -121,6 +121,7 @@ public class KickHandler : MonoBehaviour
 
             float heightDifference = math.abs(ballPosition.y - thisPosition.y);
             animator.SetFloat("BallPosY", heightDifference);
+            Debug.Log("heightDifference, " + heightDifference);
 
             if (!isUpForce)
             {
