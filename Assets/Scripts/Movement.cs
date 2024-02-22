@@ -11,8 +11,6 @@ public class Movement : MonoBehaviour
     [SerializeField] RunHandler runHandler;
     [Space]
     [Header("Configuration")]
-    [SerializeField] KeyCode jogLeftKey = KeyCode.Q;
-    [SerializeField] KeyCode jogRightKey = KeyCode.E;
     [SerializeField] public float speed = 1000f;
     [HideInInspector] float initialSpeed;
     [SerializeField] public float maxSpeed = 5f;
@@ -73,7 +71,6 @@ public class Movement : MonoBehaviour
     {
         Move();
         RotateTowardDirection();
-        HandleJogging();
         ClampPlayerVelocity();
     }
 
@@ -115,17 +112,6 @@ public class Movement : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSmoothness * Time.deltaTime);
     }
 
-    void HandleJogging()
-    {
-        if (Input.GetKeyDown(jogLeftKey))
-        {
-            rb.AddForce(-transform.right * 5f, ForceMode.Impulse);
-        }
-        if (Input.GetKeyDown(jogRightKey))
-        {
-            rb.AddForce(transform.right * 5f, ForceMode.Impulse);
-        }
-    }
     void ClampPlayerVelocity()
     {
         rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);

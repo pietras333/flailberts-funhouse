@@ -10,13 +10,15 @@ public class CameraLock : MonoBehaviour
     [SerializeField] public Transform playerTarget;
     [Space]
     [Header("Configuration")]
-    [SerializeField] float followSpeed = 0.5f;
+    [SerializeField] float followSpeed = 0.85f;
     [HideInInspector] float initialPositionZ;
+    [HideInInspector] float initialPositionY;
 
     void Start()
     {
         InitializeComponents();
         initialPositionZ = transform.position.z;
+        initialPositionY = transform.position.y;
     }
 
     void InitializeComponents()
@@ -48,7 +50,7 @@ public class CameraLock : MonoBehaviour
         float distanceToBall = Vector3.Distance(playerTarget.transform.position, ballTarget.position);
         float targetPositionX = playerTarget.position.x + (distanceToBall * 0.5f);
 
-        Vector3 targetPosition = new Vector3(targetPositionX, transform.position.y, initialPositionZ);
+        Vector3 targetPosition = new Vector3(targetPositionX, initialPositionY, initialPositionZ);
 
         transform.position = Vector3.Slerp(transform.position, targetPosition, followSpeed * Time.deltaTime);
     }
