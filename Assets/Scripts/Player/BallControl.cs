@@ -19,7 +19,7 @@ public class BallControl : MonoBehaviour
     [SerializeField] public bool canControlBall = true;
     [SerializeField] public bool isDribbling;
 
-    void OnDrawGizmosSelected()
+    void OnDrawGizmos()
     {
         DebugBallControlRange();
     }

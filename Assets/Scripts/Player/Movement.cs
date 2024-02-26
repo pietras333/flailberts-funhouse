@@ -30,7 +30,7 @@ public class Movement : MonoBehaviour
     [Header("States")]
     [SerializeField] public bool canMove = true;
 
-    void OnDrawGizmosSelected()
+    void OnDrawGizmos()
     {
         DebugDirectionGizmos();
     }

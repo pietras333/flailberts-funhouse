@@ -12,12 +12,20 @@ public class CelebrationHandler : MonoBehaviour
     [Space]
     [Header("Configuration")]
     [SerializeField] int animationsCount;
-    [SerializeField] float animationDuration = 3;
+    [SerializeField] float animationDuration = 0.1f;
 
 
     void Start()
     {
         InitializeComponents();
+    }
+
+    void Update()
+    {
+        // debugging
+        if(Input.GetKeyDown(KeyCode.L)){
+            PlayRandomAnimation();
+        }
     }
 
     void InitializeComponents()
@@ -31,7 +39,7 @@ public class CelebrationHandler : MonoBehaviour
 
     public void PlayRandomAnimation()
     {
-        int animationIndex = Random.Range(0, animationsCount);
+        int animationIndex = Random.Range(1, animationsCount);
         animator.SetInteger("celebrationIndex", animationIndex);
         movement.canMove = false;
         Invoke("ResetAnimatorState", animationDuration);
