@@ -9,6 +9,7 @@ public class Movement : MonoBehaviour
     [SerializeField] Rigidbody rb;
     [SerializeField] BallControl ballControl;
     [SerializeField] RunHandler runHandler;
+    [SerializeField] Transform orientation;
     [Space]
     [Header("Configuration")]
     [SerializeField] public float speed = 1000f;
@@ -53,7 +54,7 @@ public class Movement : MonoBehaviour
 
     void InitializeComponents()
     {
-        if (!animator || !rb || !ballControl || !runHandler)
+        if (!animator || !rb || !ballControl || !runHandler || !transform)
         {
             Debug.LogError("One or more references are missing in the Movement script.", gameObject);
             return;
@@ -89,7 +90,7 @@ public class Movement : MonoBehaviour
     {
         float directionX = Input.GetAxisRaw("Horizontal");
         float directionZ = Input.GetAxisRaw("Vertical");
-        direction = new Vector3(directionX, 0f, directionZ).normalized;
+        direction = directionX * orientation.right + directionZ * orientation.forward;
     }
 
     void Move()

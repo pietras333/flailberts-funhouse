@@ -86,7 +86,7 @@ public class KickHandler : MonoBehaviour
             StopCoroutine("KickForceIncrementation");
 
             Invoke("HandleKick", kickCooldownHalf);
-            Invoke("StopKicking", kickCooldownHalf);
+            Invoke("StopKicking", kickCooldown);
             Invoke("AllowBallControl", kickCooldown);
         }
     }
