@@ -13,6 +13,7 @@ public class KickHandler : MonoBehaviour
     [SerializeField] Movement movement;
     [SerializeField] Animator animator;
     [SerializeField] BallControl ballControl;
+    [SerializeField] Transform orientation;
     [Space]
     [Header("Configuration")]
     [SerializeField] KeyCode kickKey = KeyCode.F;
@@ -125,7 +126,7 @@ public class KickHandler : MonoBehaviour
 
             if (!isUpForce)
             {
-                ballRb.AddForce(this.transform.forward * currentKickForce * kickForceMultiplier, ForceMode.Impulse);
+                ballRb.AddForce(orientation.transform.forward * currentKickForce * kickForceMultiplier, ForceMode.Impulse);
                 return;
             }
             ballRb.AddForce(this.transform.forward * currentKickForce * kickForceMultiplier + Vector3.up * currentUpForce, ForceMode.Impulse);
