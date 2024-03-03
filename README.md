@@ -1,16 +1,12 @@
-<h1 align="left">Physics based soccer game.</h1>
+<h1 align="left">Flailbert's-Funhouse</h1>
 
 ###
 
-<p align="left">Soccer game driven by physics.</p>
+<p align="left">Physics based, casual, arcade game. Controll ragdolls, fight with other people in mini-games like tag or game-cart and many more.</p>
 
 ###
 
-<p align="left">Game made in unity in 3D, driven by rigidbodys and physics. With powerups, dummies and more.</p>
-
-###
-
-![image](https://github.com/pietras333/physics-based-soccer-game/assets/83142069/9e963a0b-8133-4a36-960e-7ca8d4a4f1db)
+![image](https://github.com/pietras333/flailberts-funhouse/assets/83142069/e3d68624-4612-4aa5-b6ca-bdb4ca6ac9be)
 
 ###
 
