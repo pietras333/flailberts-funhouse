@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,16 +8,25 @@ public class BouncePad : MonoBehaviour
     [Header("Bounce Pad")]
     [Space]
     [Header("Configuration")]
-    [SerializeField] string playerTag = "Player";
-    [SerializeField] float pushForce = 500f;
+    [SerializeField] LayerMask playerParentLayer;
+    [SerializeField] float pushForce = 1000f;
+    [SerializeField] Vector3 colliderExtents;
+    [HideInInspector] Collider[] colliders;
 
-
-    void OnCollisionEnter(Collision collision)
+    void OnDrawGizmos()
     {
-        Debug.Log("Collision");
-        if (collision.transform.gameObject.tag == playerTag)
+        Gizmos.color = Color.red;
+        Gizmos.DrawCube(transform.position, colliderExtents * 2f);
+    }
+
+    void FixedUpdate()
+    {
+        colliders = Physics.OverlapBox(transform.position, colliderExtents, transform.rotation, playerParentLayer);
+        if (colliders.Length > 0)
         {
-            collision.transform.GetComponentInParent<Rigidbody>().AddForce(transform.forward * pushForce, ForceMode.Impulse);
+            GameObject player = colliders[^1].gameObject;
+            Debug.Log(player);
+            player.GetComponent<Rigidbody>().AddForce(player.transform.up * pushForce, ForceMode.Force);
         }
     }
 }
