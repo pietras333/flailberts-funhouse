@@ -14,21 +14,28 @@ public class SlopeHandler : MonoBehaviour
     [SerializeField] GroundDetection groundDetection;
     [SerializeField] InputHandler inputHandler;
 
+    [Header("Objects")]
+    [SerializeField] Transform orientation;
+
     [Header("Configuration")]
     [SerializeField] float maxSlopeAngle = 45f;
+    [SerializeField] float checkRange = 0.75f;
+    [SerializeField] LayerMask groundLayer;
+    [HideInInspector] RaycastHit groundHit;
+
 
     public SlopeDetectionResult CheckForSlope()
     {
-        GroundDetectionResult checkResult = groundDetection.CheckGrounded();
-        RaycastHit groundHit = checkResult.hitInfo;
-
-        float angle = Vector3.Angle(Vector3.up, groundHit.normal);
-        bool checkForSlope = angle <= maxSlopeAngle && angle != 0;
-        if (checkForSlope)
+        if (Physics.Raycast(orientation.position, -orientation.up, out groundHit, checkRange, groundLayer))
         {
-            Vector3 slopeMoveDirection = Vector3.ProjectOnPlane(inputHandler.direction, groundHit.normal).normalized;
-            Debug.Log("slopeMoveDirection: " + slopeMoveDirection);
-            return new SlopeDetectionResult(checkForSlope, slopeMoveDirection);
+            float angle = Vector3.Angle(Vector3.up, groundHit.normal);
+            bool checkForSlope = angle <= maxSlopeAngle && angle != 0;
+            if (checkForSlope)
+            {
+                Vector3 slopeMoveDirection = Vector3.ProjectOnPlane(inputHandler.direction, groundHit.normal).normalized;
+                Debug.Log("Check for slope: " + checkForSlope);
+                return new SlopeDetectionResult(checkForSlope, slopeMoveDirection);
+            }
         }
         return new SlopeDetectionResult(false, Vector3.zero);
     }

@@ -58,13 +58,12 @@ public class CameraLook : MonoBehaviour
         if (Physics.Raycast(cameraHolder.transform.position, -cameraHolder.transform.forward, out hit, offset, clipLayer))
         {
             // If the ray hits something, adjust the target position
-            targetPosition = hit.point;
+            targetPosition = hit.point + camera.transform.forward;
         }
 
         // Smoothly move the camera to the target position
-        camera.transform.position = Vector3.Lerp(camera.transform.position, targetPosition, followSpeed * Time.deltaTime);
+        camera.transform.position = Vector3.Lerp(camera.transform.position, targetPosition, 1000f * Time.deltaTime);
     }
-
 
     void OnDrawGizmos()
     {

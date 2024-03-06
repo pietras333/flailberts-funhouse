@@ -9,6 +9,7 @@ public class PlayerAnimatorHub : MonoBehaviour
     [Header("Scripts")]
     [SerializeField] InputHandler inputHandler;
     [SerializeField] GroundDetection groundDetection;
+    [SerializeField] Locomotion locomotion;
     [Header("Objects")]
     [SerializeField] Animator animator;
     void Update()
@@ -16,5 +17,6 @@ public class PlayerAnimatorHub : MonoBehaviour
         animator.SetBool("isRunning", inputHandler.CheckForMovement());
         animator.SetBool("isSprinting", inputHandler.isRunning);
         animator.SetBool("isGrounded", groundDetection.CheckGrounded().checkForGround);
+        animator.SetBool("isSliding", locomotion.isSliding);
     }
 }

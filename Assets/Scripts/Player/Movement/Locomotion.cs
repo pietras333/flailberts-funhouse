@@ -17,6 +17,7 @@ public class Locomotion : MonoBehaviour
     [Header("Objects")]
     [SerializeField] public Rigidbody playerRigidbody;
     [SerializeField] Transform orientation;
+    [SerializeField] CapsuleCollider playerCollider;
 
     [Header("Current States")]
     [SerializeField] public float currentSpeed;
@@ -27,7 +28,8 @@ public class Locomotion : MonoBehaviour
     [SerializeField] float walkMaxSpeed = 6f;
     [SerializeField] float runSpeed = 15f;
     [SerializeField] float runMaxSpeed = 9f;
-    [SerializeField] float airMaxSpeed = 50f;
+    [SerializeField] float airSpeed = 10f;
+    [SerializeField] float airMaxSpeed = 15f;
     [SerializeField] float currentMaxSpeed;
     [SerializeField] float forceMultiplier = 100f;
     [SerializeField] Vector3 currentDirection;
@@ -36,8 +38,19 @@ public class Locomotion : MonoBehaviour
     [Header("Jump")]
     [SerializeField] float jumpForce = 5f;
 
+    [Header("Slide")]
+    [SerializeField] public bool isSliding;
+    [SerializeField] float maxSlideTime = 2f;
+    [SerializeField] float slideForce = 5;
+    [SerializeField] float normalHeight = 2f;
+    [SerializeField] float slideHeight = 1f;
+    [SerializeField] Vector3 slideDirection;
+
     public void Update()
     {
+        // Handle slide
+        HandleSlide();
+
         // Update variables on runtime
         UpdateVariables();
 
@@ -53,16 +66,22 @@ public class Locomotion : MonoBehaviour
 
     public void FixedUpdate()
     {
-        // Handle basic locomotion 
-        HandleMotion();
-
         // Handle Jumping
         HandleJump();
+
+        // Handle basic locomotion 
+        HandleMotion();
     }
 
     #region MAIN FUNCTIONS
     void HandleMotion()
     {
+        // If player is sliding dont allow player to move
+        if (isSliding)
+        {
+            return;
+        }
+
         // Look for input and apply forces
         if (inputHandler.CheckForMovement())
         {
@@ -70,6 +89,7 @@ public class Locomotion : MonoBehaviour
             playerRigidbody.AddForce(currentSpeed * forceMultiplier * Time.fixedDeltaTime * currentDirection, ForceMode.Force);
         }
 
+        // If player is in air then apply gravity force to make him speed up
         if (!isGrounded)
         {
             playerRigidbody.AddForce(9f * Time.fixedDeltaTime * -orientation.up, ForceMode.Force);
@@ -120,11 +140,18 @@ public class Locomotion : MonoBehaviour
 
     void SetRotation()
     {
+        // Check if player is sliding
+        if (isSliding)
+        {
+            // If so then dont apply rotation
+            return;
+        }
+
         // Look for input
         if (inputHandler.CheckForMovement())
         {
             // Apply last known direction as last direction
-            lastDirection = currentDirection;
+            lastDirection = inputHandler.direction;
         }
 
         // Calculate target rotation based on last direction 
@@ -134,16 +161,93 @@ public class Locomotion : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, 5f * Time.deltaTime);
     }
 
+    void HandleSlide()
+    {
+        // Check if player is pressing down slide key and want to move
+        if (Input.GetKeyDown(KeyCode.LeftControl))
+        {
+            // Assign slide direction based on player platform if its slope get slop direction and if not get base direction
+            slideDirection = slopeHandler.CheckForSlope().checkForSlope ? slopeHandler.CheckForSlope().slopeMoveDirection : inputHandler.direction;
+
+            // Then start sliding
+            StartSlide();
+        }
+
+        // Check if player stopped pressing slide key and is currently sliding
+        if (Input.GetKeyUp(inputHandler.slideKey) && isSliding)
+        {
+            // Then stop sliding
+            StopSlide();
+        }
+    }
+
+    void StartSlide()
+    {
+        // Start sliding
+        isSliding = true;
+
+        // Scale player collider down
+        playerCollider.height = slideHeight;
+
+        // Apply down force so player wont be in the air 
+        playerRigidbody.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+
+        // Invoke slide coroutine
+        StartCoroutine(nameof(ApplySlideForce));
+    }
+
+    IEnumerator ApplySlideForce()
+    {
+        // Automatically refill timer to max slide time
+        float time = maxSlideTime;
+
+        // Do coroutine as long as timer expires
+        while (time >= 0f)
+        {
+            // Check if player is on slope
+            SlopeDetectionResult slopeDetectionResult = slopeHandler.CheckForSlope();
+
+            // If player is not on slope
+            if (!slopeDetectionResult.checkForSlope)
+            {
+                // Then decrease timer
+                time -= Time.deltaTime;
+            }
+
+            // Apply force in current sliding direction 
+            playerRigidbody.AddForce(slideForce * Time.fixedDeltaTime * slideDirection.normalized, ForceMode.Force);
+
+            // Repeat cycle
+            yield return null;
+        }
+
+        // After cycle stop sliding
+        StopSlide();
+    }
+
+    private void StopSlide()
+    {
+        // Set sliding to false
+        isSliding = false;
+
+        // Scale player up to normal height
+        playerCollider.height = normalHeight;
+
+        // Stop current sliding coroutine
+        StopCoroutine(nameof(ApplySlideForce));
+    }
+
     #endregion MAIN FUNCIONS
 
     #region GET / SET FUNCTIONS
     float GetCurrentSpeed()
     {
-        // If player is not on ground set his speed to run speed
+        // If player is not on ground set his speed to air speed
         if (!isGrounded)
         {
-            return runSpeed;
+            return airSpeed;
         }
+
         // Return runSpeed if player is running or walkSpeed if is walking
         return inputHandler.isRunning ? runSpeed : walkSpeed;
     }
@@ -157,11 +261,12 @@ public class Locomotion : MonoBehaviour
 
     float GetCurrentMaxSpeed()
     {
-        // If player is not on ground set his speed to air max speed
-        if (!isGrounded)
+        // If player is not on ground or is sliding set his speed to air max speed
+        if (!isGrounded || isSliding)
         {
             return airMaxSpeed;
         }
+
         // Return runMaxSpeed if player is running or walkMaxSpeed if is walking
         return inputHandler.isRunning ? runMaxSpeed : walkMaxSpeed;
     }
