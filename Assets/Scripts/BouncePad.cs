@@ -25,8 +25,7 @@ public class BouncePad : MonoBehaviour
         if (colliders.Length > 0)
         {
             GameObject player = colliders[^1].gameObject;
-            Debug.Log(player);
-            player.GetComponent<Rigidbody>().AddForce(player.transform.up * pushForce, ForceMode.Force);
+            player.GetComponent<Rigidbody>().AddForce(transform.up * pushForce, ForceMode.Force);
         }
     }
 }
