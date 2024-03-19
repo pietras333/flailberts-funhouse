@@ -11,6 +11,7 @@ public class ViewController : MonoBehaviour
     [SerializeField] InputReceiver inputReceiver; // Reference to the input receiver script
     [SerializeField] ViewParameters viewParameters; // Reference to the view parameters script
     [Header("Objects")]
+    [SerializeField] Transform mainCamera;
     [SerializeField] Transform cameraHolder; // The object holding the camera
     [SerializeField] Transform orientation; // The object representing player orientation
 
@@ -29,6 +30,7 @@ public class ViewController : MonoBehaviour
     {
         SetCameraRotation(); // Set camera rotation based on input
         UpdateOrientation(); // Update player orientation based on input
+        UpdateMainCameraTransform();
     }
 
     // Set camera rotation based on input
@@ -41,5 +43,11 @@ public class ViewController : MonoBehaviour
     void UpdateOrientation()
     {
         orientation.transform.rotation = Quaternion.Euler(0, inputReceiver.GetViewFeedback().rotationY, 0f); // Update player orientation
+    }
+
+    void UpdateMainCameraTransform()
+    {
+        mainCamera.transform.position = Vector3.Slerp(mainCamera.transform.position, cameraHolder.transform.position, viewParameters.followSmothness);
+        mainCamera.transform.rotation = cameraHolder.transform.rotation;
     }
 }

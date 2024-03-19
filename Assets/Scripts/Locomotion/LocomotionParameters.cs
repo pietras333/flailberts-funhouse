@@ -1,5 +1,4 @@
 using System.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class LocomotionParameters : MonoBehaviour
@@ -23,6 +22,13 @@ public class LocomotionParameters : MonoBehaviour
     [Header("Jump configuration")]
     [SerializeField, Range(1, 5)] float jumpForce = 4.5f; // Jump force
 
+    [Header("Slide configuration")]
+    [SerializeField, Range(0.1f, 1f)] float slideDuration = 0.65f; // Duration of sliding
+    [SerializeField, Range(5, 15)] float slideSpeed = 11f; // Speed of sliding
+
+    [Header("Vault configuration")]
+    [SerializeField, Range(0.1f, 10f)] float vaultForce = 5f;
+
     // Function to get walk parameters
     public WalkParameters GetWalkParameters()
     {
@@ -45,6 +51,17 @@ public class LocomotionParameters : MonoBehaviour
     public AdditionalParameters GetAdditionalParameters()
     {
         return new AdditionalParameters(stopSmothness, gravity, groundDrag, airDrag);
+    }
+
+    // Function to get slide parameters
+    public SlideParameters GetSlideParameters()
+    {
+        return new SlideParameters(slideDuration, slideSpeed * movementMultiplier, slideSpeed);
+    }
+
+    public VaultParameters GetVaultParameters()
+    {
+        return new VaultParameters(vaultForce);
     }
 }
 
@@ -95,5 +112,29 @@ public class AdditionalParameters
         this.gravity = gravity;
         this.groundDrag = groundDrag;
         this.airDrag = airDrag;
+    }
+}
+
+// Class to hold slide parameters
+public class SlideParameters
+{
+    public float slideDuration; // Duration of sliding
+    public float slideSpeed; // Speed of sliding
+    public float maxSlideSpeed; // Maximum sliding speed
+    public SlideParameters(float slideDuration, float slideSpeed, float maxSlideSpeed)
+    {
+        this.slideDuration = slideDuration;
+        this.slideSpeed = slideSpeed;
+        this.maxSlideSpeed = maxSlideSpeed;
+    }
+}
+
+public class VaultParameters
+{
+    public float vaultForce;
+
+    public VaultParameters(float vaultForce)
+    {
+        this.vaultForce = vaultForce;
     }
 }

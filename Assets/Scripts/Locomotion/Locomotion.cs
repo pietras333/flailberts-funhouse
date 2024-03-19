@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.Video;
 
 public class Locomotion : MonoBehaviour
 {
@@ -13,6 +12,7 @@ public class Locomotion : MonoBehaviour
     [SerializeField] InputReceiver inputReceiver; // Script handling player input
     [SerializeField] GroundDetector groundDetector; // Script detecting if the player is grounded
     [SerializeField] SlopeDetector slopeDetector; // Script detecting if the player is on a slope
+    [SerializeField] SlideHandler slideHandler;
 
     void Update()
     {
@@ -34,11 +34,17 @@ public class Locomotion : MonoBehaviour
     // Handle player movement
     void HandleMovement()
     {
-        // Apply force for movement
-        playerRigidbody.AddForce(GetCurrentSpeed() * Time.fixedDeltaTime * GetCurrentDirection());
-
         // Apply custom gravity
         playerRigidbody.AddForce(-locomotionParameters.GetAdditionalParameters().gravity * Time.fixedDeltaTime * transform.up, ForceMode.Force);
+
+        // If the player is sliding, skip applying movement force
+        if (slideHandler.isSliding)
+        {
+            return;
+        }
+
+        // Apply force for movement
+        playerRigidbody.AddForce(GetCurrentSpeed() * Time.fixedDeltaTime * GetCurrentDirection());
     }
 
     // Get the current speed based on player input and state
@@ -52,7 +58,7 @@ public class Locomotion : MonoBehaviour
     }
 
     // Get the current movement direction based on player input and slope state
-    Vector3 GetCurrentDirection()
+    public Vector3 GetCurrentDirection()
     {
         if (!slopeDetector.GetSlopeDetectionFeedback().isOnSlope)
         {

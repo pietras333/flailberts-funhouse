@@ -1,5 +1,6 @@
 using System;
 using Unity.Mathematics;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class InputReceiver : MonoBehaviour
@@ -32,6 +33,9 @@ public class InputReceiver : MonoBehaviour
     [Header("Jump input")]
     [SerializeField] KeyCode jumpKey = KeyCode.Space;
 
+    [Header("Slide input")]
+    [SerializeField] KeyCode slideKey = KeyCode.LeftControl; // Key for sliding
+
     // Function to retrieve input feedback
     public InputFeedback GetInputFeedback()
     {
@@ -44,6 +48,11 @@ public class InputReceiver : MonoBehaviour
     {
         Quaternion viewRotation = Quaternion.Euler(rotationX, rotationY, rotationZ); // Create view rotation quaternion
         return new ViewFeedback(viewRotation, rotationX, rotationY); // Return view feedback
+    }
+
+    public InputParametersFeedback GetInputParametersFeedback()
+    {
+        return new InputParametersFeedback(slideKey, jumpKey); // Return slide key parameter feedback
     }
 
     // Update is called once per frame
@@ -120,5 +129,20 @@ public class ViewFeedback
         this.viewRotation = viewRotation; // Assign view rotation
         this.rotationX = rotationX; // Assign X rotation
         this.rotationY = rotationY; // Assign Y rotation
+    }
+}
+
+// Class to hold input parameters feedback
+public class InputParametersFeedback
+{
+    public KeyCode slideKey; // Key for sliding
+
+    public KeyCode jumpKey;
+
+    // Constructor to initialize slide key
+    public InputParametersFeedback(KeyCode slideKey, KeyCode jumpKey)
+    {
+        this.slideKey = slideKey; // Assign slide key
+        this.jumpKey = jumpKey; // Assign slide key
     }
 }
