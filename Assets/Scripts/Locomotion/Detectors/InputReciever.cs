@@ -36,6 +36,9 @@ public class InputReceiver : MonoBehaviour
     [Header("Slide input")]
     [SerializeField] KeyCode slideKey = KeyCode.LeftControl; // Key for sliding
 
+    [Header("Combat input")]
+    [SerializeField] KeyCode attackKey = KeyCode.Mouse0;
+
     // Function to retrieve input feedback
     public InputFeedback GetInputFeedback()
     {
@@ -53,6 +56,11 @@ public class InputReceiver : MonoBehaviour
     public InputParametersFeedback GetInputParametersFeedback()
     {
         return new InputParametersFeedback(slideKey, jumpKey); // Return slide key parameter feedback
+    }
+
+    public CombatFeedback GetCombatFeedback()
+    {
+        return new CombatFeedback(attackKey);
     }
 
     // Update is called once per frame
@@ -144,5 +152,16 @@ public class InputParametersFeedback
     {
         this.slideKey = slideKey; // Assign slide key
         this.jumpKey = jumpKey; // Assign slide key
+    }
+}
+
+
+public class CombatFeedback
+{
+    public KeyCode attackKey;
+
+    public CombatFeedback(KeyCode attackKey)
+    {
+        this.attackKey = attackKey;
     }
 }

@@ -9,7 +9,6 @@ public class VaultHandler : MonoBehaviour
     [Header("Scripts")]
     [SerializeField] LocomotionParameters locomotionParameters;
     [SerializeField] GroundDetector groundDetector;
-
     [SerializeField] InputReceiver inputReceiver;
 
     [Header("References")]
@@ -38,7 +37,7 @@ public class VaultHandler : MonoBehaviour
 
     void HandleVault()
     {
-        if (!ledgeDetected || groundDetector.GetGroundFeedback().isGrounded || Physics.Raycast(transform.position + Vector3.up * 0.5f, orientation.forward, 1f, groundLayer))
+        if (!ledgeDetected || groundDetector.GetGroundFeedback().isGrounded || Physics.Raycast(transform.position + Vector3.up * 0.5f, orientation.forward, 2f, groundLayer))
         {
             return;
         }

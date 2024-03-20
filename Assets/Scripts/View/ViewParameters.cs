@@ -11,7 +11,7 @@ public class ViewParameters : MonoBehaviour
     [SerializeField, Range(50, 90)] float lockRotationX = 60f; // Maximum rotation on the X-axis
     [SerializeField, Range(0, 25f)] float cameraTiltZ = 15f; // Amount of camera tilt on the Z-axis
     [SerializeField, Range(1, 15f)] float tiltSmothness = 7f; // Smoothing factor for camera tilt
-    [SerializeField, Range(0.1f, 10)] public float followSmothness = 10f;
+    [SerializeField, Range(0.01f, 10)] public float followSmothness = 0.05f;
     [SerializeField] public bool lockCursor; // Whether to lock the cursor
 
     [Header("View Shock Absorbtion")]
