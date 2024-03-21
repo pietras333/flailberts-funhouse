@@ -58,9 +58,9 @@ public class InputReceiver : MonoBehaviour
         return new InputParametersFeedback(slideKey, jumpKey); // Return slide key parameter feedback
     }
 
-    public CombatFeedback GetCombatFeedback()
+    public CombatInputFeedback GetCombatInputFeedback()
     {
-        return new CombatFeedback(attackKey);
+        return new CombatInputFeedback(attackKey); // Return attack key parameter feedback
     }
 
     // Update is called once per frame
@@ -156,12 +156,13 @@ public class InputParametersFeedback
 }
 
 
-public class CombatFeedback
+public class CombatInputFeedback
 {
     public KeyCode attackKey;
 
-    public CombatFeedback(KeyCode attackKey)
+    // Constructor to initialize attack key
+    public CombatInputFeedback(KeyCode attackKey)
     {
-        this.attackKey = attackKey;
+        this.attackKey = attackKey; // Assign attack key
     }
 }
