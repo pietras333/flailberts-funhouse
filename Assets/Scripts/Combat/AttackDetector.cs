@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using EZCameraShake;
 
 public class AttackDetector : MonoBehaviour
 {
@@ -8,7 +9,7 @@ public class AttackDetector : MonoBehaviour
     [Space]
     [Header("References")]
     [Header("Scripts")]
-
+    [SerializeField] CameraShakeHandler cameraShakeHandler;
     [SerializeField] Combat combat; // Reference to the Combat script
     [SerializeField] CombatParameters combatParameters; // Reference to the CombatParameters script
 
@@ -20,6 +21,7 @@ public class AttackDetector : MonoBehaviour
         {
             // If conditions are met, damage the enemy's parent object's health
             other.GetComponentInParent<Health>().GetDamage(combatParameters.GetCombatParametersFeedback().damage);
+            cameraShakeHandler.ShakeOnAttack();
         }
     }
 }

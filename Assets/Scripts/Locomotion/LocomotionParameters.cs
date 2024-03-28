@@ -18,9 +18,11 @@ public class LocomotionParameters : MonoBehaviour
 
     [Header("Run configuration")]
     [SerializeField, Range(8, 15)] float runSpeed = 11f; // Running speed
+    [SerializeField, Range(0.01f, 10)] float runStaminaCost = 0.1f;
 
     [Header("Jump configuration")]
     [SerializeField, Range(1, 5)] float jumpForce = 4.5f; // Jump force
+    [SerializeField, Range(0.01f, 10)] float jumpStaminaCost = 0.01f;
 
     [Header("Slide configuration")]
     [SerializeField, Range(0.1f, 1f)] float slideDuration = 0.65f; // Duration of sliding
@@ -38,13 +40,13 @@ public class LocomotionParameters : MonoBehaviour
     // Function to get run parameters
     public RunParameters GetRunParameters()
     {
-        return new RunParameters(runSpeed * movementMultiplier, walkSpeed);
+        return new RunParameters(runSpeed * movementMultiplier, walkSpeed, runStaminaCost);
     }
 
     // Function to get jump parameters
     public JumpParameters GetJumpParameters()
     {
-        return new JumpParameters(jumpForce * globalMultiplier);
+        return new JumpParameters(jumpForce * globalMultiplier, jumpStaminaCost * globalMultiplier);
     }
 
     // Function to get additional parameters
@@ -82,10 +84,12 @@ public class RunParameters
 {
     public float runSpeed; // Running speed
     public float maxRunSpeed; // Maximum running speed
-    public RunParameters(float runSpeed, float maxRunSpeed)
+    public float runStaminaCost;
+    public RunParameters(float runSpeed, float maxRunSpeed, float runStaminaCost)
     {
         this.runSpeed = runSpeed;
         this.maxRunSpeed = maxRunSpeed;
+        this.runStaminaCost = runStaminaCost;
     }
 }
 
@@ -93,9 +97,11 @@ public class RunParameters
 public class JumpParameters
 {
     public float jumpForce; // Jump force
-    public JumpParameters(float jumpForce)
+    public float jumpStaminaCost;
+    public JumpParameters(float jumpForce, float jumpStaminaCost)
     {
         this.jumpForce = jumpForce;
+        this.jumpStaminaCost = jumpStaminaCost;
     }
 }
 

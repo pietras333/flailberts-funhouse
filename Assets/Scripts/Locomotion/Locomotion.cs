@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Locomotion : MonoBehaviour
 {
@@ -8,11 +9,13 @@ public class Locomotion : MonoBehaviour
     [Header("References")]
     [SerializeField] Rigidbody playerRigidbody; // Reference to the player's Rigidbody component
     [Header("Scripts")]
+    [SerializeField] Stamina stamina;
     [SerializeField] LocomotionParameters locomotionParameters; // Scriptable object holding locomotion parameters
     [SerializeField] InputReceiver inputReceiver; // Script handling player input
     [SerializeField] GroundDetector groundDetector; // Script detecting if the player is grounded
     [SerializeField] SlopeDetector slopeDetector; // Script detecting if the player is on a slope
     [SerializeField] SlideHandler slideHandler;
+    [SerializeField] CameraShakeHandler cameraShakeHandler;
 
     void Update()
     {
@@ -21,6 +24,11 @@ public class Locomotion : MonoBehaviour
 
         // Set drag based on whether the player is grounded
         playerRigidbody.drag = groundDetector.GetGroundFeedback().isGrounded ? locomotionParameters.GetAdditionalParameters().groundDrag : locomotionParameters.GetAdditionalParameters().airDrag;
+
+        if (playerRigidbody.velocity.magnitude > locomotionParameters.GetRunParameters().maxRunSpeed)
+        {
+            cameraShakeHandler.ShakeOnMove();
+        }
     }
 
     void FixedUpdate()
@@ -42,6 +50,12 @@ public class Locomotion : MonoBehaviour
         {
             return;
         }
+
+        if (groundDetector.GetGroundFeedback().isGrounded && inputReceiver.GetInputFeedback().isRunning && stamina.GetStaminaStateFeedback().currentStamina >= locomotionParameters.GetRunParameters().runStaminaCost && inputReceiver.GetInputFeedback().direction != Vector3.zero)
+        {
+            stamina.DecreaseStamina(locomotionParameters.GetRunParameters().runStaminaCost);
+        }
+
 
         // Apply force for movement
         playerRigidbody.AddForce(GetCurrentSpeed() * Time.fixedDeltaTime * GetCurrentDirection());
@@ -80,12 +94,14 @@ public class Locomotion : MonoBehaviour
     // Handle player jumping
     void HandleJump()
     {
-        if (inputReceiver.GetInputFeedback().isJumping && groundDetector.GetGroundFeedback().isGrounded)
+        if (inputReceiver.GetInputFeedback().isJumping && groundDetector.GetGroundFeedback().isGrounded && stamina.GetStaminaStateFeedback().currentStamina >= locomotionParameters.GetJumpParameters().jumpStaminaCost)
         {
             // Zero out vertical velocity before jumping
             playerRigidbody.velocity = new Vector3(playerRigidbody.velocity.x, 0f, playerRigidbody.velocity.z);
             // Apply jump force
             playerRigidbody.AddForce(locomotionParameters.GetJumpParameters().jumpForce * transform.up, ForceMode.Force);
+
+            stamina.DecreaseStamina(locomotionParameters.GetJumpParameters().jumpStaminaCost);
         }
     }
 

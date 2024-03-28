@@ -34,7 +34,7 @@ public class SlideHandler : MonoBehaviour
     void HandleSliding()
     {
         // Start sliding when slide key is pressed and conditions are met
-        if (Input.GetKeyDown(inputReceiver.GetInputParametersFeedback().slideKey) && !isSliding && slideTimer > 0)
+        if (Input.GetKeyDown(inputReceiver.GetInputParametersFeedback().slideKey) && !isSliding && slideTimer > 0 && playerRigidbody.velocity.y < 1f)
         {
             StartSlide();
         }

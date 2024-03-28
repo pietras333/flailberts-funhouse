@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/Mini-games/Tag/Tag.unity
-    guid: 47e257b65835ee546b24706563345724
+  - enabled: 1
+    path: Assets/Scenes/Prototype/Gym.unity
+    guid: 27333c67b4dbc9c4495da08a8b301953
   m_configObjects: {}
