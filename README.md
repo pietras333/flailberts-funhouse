@@ -2,11 +2,11 @@
 
 ###
 
-<p align="left">Physics based, casual, arcade game. Controll ragdolls, fight with other people in mini-games like tag or game-cart and many more.</p>
+<p align="left">FPS, Melee, Story, Adventure, Action game about sushi master that needs to save the village from other evil sushi master that poisoned and turned all of his customers into monsters!</p>
 
 ###
 
-![image](https://github.com/pietras333/flailberts-funhouse/assets/83142069/e3d68624-4612-4aa5-b6ca-bdb4ca6ac9be)
+![game-display - Made with Clipchamp](https://github.com/pietras333/flailberts-funhouse/assets/83142069/83bb0c46-250e-4663-bcec-b31fa8420e19)
 
 ###
 
