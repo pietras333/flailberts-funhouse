@@ -41,7 +41,6 @@ public class VaultHandler : MonoBehaviour
         {
             return;
         }
-        Debug.Log("Vaulted");
         // playerRigidbody.AddForce(transform.up * locomotionParameters.GetVaultParameters().vaultForce * 2, ForceMode.Impulse);
         playerRigidbody.MovePosition(transform.position + Vector3.up + orientation.forward);
     }
